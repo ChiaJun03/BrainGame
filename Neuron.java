@@ -5,6 +5,13 @@
  */
 package braingame;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +22,8 @@ public class Neuron {
     private Integer lifetime;
     private Integer connectNum;
     private ArrayList<Synapse> synapseList;
+    private ArrayList<Node> nodeList ;
+    private boolean visited = false ;
     
     /**A constructor that create an object with 
      * specific lifetime and number of connected node.
@@ -25,6 +34,8 @@ public class Neuron {
         this.lifetime  = lifetime ;
         this.connectNum = connectNum;
         synapseList = new ArrayList ();
+        nodeList = new ArrayList();
+        visited = false;
     }
 
     /**Retrieve lifetime  of the neuron.
@@ -108,4 +119,52 @@ public class Neuron {
     public int getDistanceTo(int toID){
         return synapseList.get(getIndexOf(toID)).getDistance();
     }
+    
+    ////////////////// Methods below is for BFS !! ////////////////
+    
+    public boolean checkVisit(){
+        return visited ;
+    }
+    
+    public void setVisited(){
+        this.visited = true;
+    }
+    
+    public void addBFSNode(int parent ,int toID ,int time){
+       nodeList.add(new Node(parent , toID , time));
+    }
+    
+    public int getIndexOfBFSNode(int id){
+        for(Node ptr:nodeList){
+            if(ptr.getId() == id)
+                return nodeList.indexOf(ptr);
+        }
+        return -1;
+    }
+    
+    public int getIndexOfBFSParent(int parent){
+        for(Node ptr : nodeList){
+            if(ptr.getParent()==parent)
+                return nodeList.indexOf(ptr)+1;
+        }
+        return -1;
+    }
+    
+    public boolean containsBFSNode(int id){
+        return  getIndexOfBFSNode(id)!=-1;
+    }
+    
+    
+    public boolean containsBFSParent(int parent){
+        return getIndexOfBFSParent(parent) != -1 ;
+    }
+    
+    public int getParentOf(int id){
+        return nodeList.get(getIndexOfBFSNode(id)).getParent();
+    }
+    
+    public int getTime(int id){
+        return nodeList.get(id).getTime();
+    }
+    
 }
