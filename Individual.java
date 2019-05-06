@@ -2,9 +2,11 @@
 
 import java.util.LinkedList;
 import java.util.TreeMap;
+import java.util.HashSet;
 
 public class Individual {
 
+	private HashSet<Integer> nodeSet;
 	private TreeMap<Integer,Neuron> treemap;
 	private LinkedList<Integer> path;
 	private int distance = 0 ;
@@ -42,10 +44,20 @@ public class Individual {
 	public Individual(TreeMap<Integer , Neuron> treemap , int startID , int endID , int length ) {
 		// Create individual path
 		this.path = new LinkedList<>();
+		this.nodeSet = new HashSet<>();
 		this.treemap = treemap;;
 		this.path.add(startID);
+		nodeSet.add(startID);
 		for(int i = 1 ; i < length ; i++){
-			path.add(treemap.get(path.get(i-1)).getRandomNext());
+			if(treemap.get(path.get(i-1)).getRandomNext(nodeSet) == -1 ){
+				this.path.clear();
+				nodeSet.clear();
+				path.add(startID);
+				nodeSet.add(startID);
+				i=1;
+			}
+			path.add(treemap.get(path.get(i-1)).getRandomNext(nodeSet));
+			nodeSet.add(path.getLast());
 		}
 		checkGoal(endID);
 		// initialise time ( to prevent arithmetic error)
@@ -53,6 +65,7 @@ public class Individual {
 
 		calculateTime();
 		calculateDistance();
+
 	}
 
 	/**
@@ -63,7 +76,9 @@ public class Individual {
 	public Individual(TreeMap<Integer , Neuron> treemap , int startID) {
 		this.treemap = treemap;
 		this.path = new LinkedList<>();
+		this.nodeSet = new HashSet<>();
 		this.path.add(startID);
+		nodeSet.add(startID);
 		// initialise time ( to prevent arithmetic error)
 		time=100;
 		calculateTime();
@@ -73,7 +88,7 @@ public class Individual {
    /**
 	*	Check for looping occurance in the random generated path and remove it
 	*	@param list the LinkedList path that to be check
-	*/
+	*
     public void checkLoop(LinkedList<Integer> list){
 		for(int iterate = 0 ; iterate < list.size();iterate++){
 			if(list.indexOf(list.get(iterate))!=list.lastIndexOf(list.get(iterate))){
@@ -86,7 +101,7 @@ public class Individual {
 			}
 		}
     }
-
+*/
 	/**
 	 *	Retrieve total distance for this path
      *	@return total distance for this path
@@ -109,6 +124,10 @@ public class Individual {
 	 */
 	public LinkedList<Integer> getPath() {
 		return path;
+	}
+
+	public HashSet<Integer> getHashSet(){
+		return nodeSet;
 	}
 
 	/**

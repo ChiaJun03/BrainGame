@@ -83,7 +83,7 @@ public class BrainGame{
 */
     public static void testCase(SearchSpace simulation){
         Random random = new Random();
-        int maxNode = 50;
+        int maxNode = 60;
         int num,toID;
         for(int iterate = 1; iterate <= maxNode ; iterate++){
             simulation.addNode(iterate,num=random.nextInt(maxNode-2)+1, random.nextInt(9)+1);
@@ -94,7 +94,6 @@ public class BrainGame{
                 }
                 simulation.addSynapse(iterate,toID,random.nextInt(19)+1 , random.nextInt(9)+1);
             }
-            System.out.println(iterate);
         }
     }
 
@@ -105,8 +104,8 @@ public class BrainGame{
     public static void searchGA(SearchSpace treeObject , int startID , int endID){
         int populationSize = 50;
         double crossoverRate = 0.8;
-        double mutationRate = 0.3;
-        int elitismCount = (int)(populationSize*0.1);
+        double mutationRate = 0.5;
+        int elitismCount = (int)(populationSize*0.05);
         int tournamentSize = (int)(populationSize*0.6) ;
         //Initialize GA (treemap,populationSize,mutationRate,crossoverRate,elitismCount,tournamentsize)
         GeneticAlgorithm ga = new GeneticAlgorithm(treeObject,populationSize,mutationRate,crossoverRate,elitismCount,tournamentSize);
@@ -120,11 +119,12 @@ public class BrainGame{
 			// Print fittest individual from population
 
 			// Apply crossover
+            //System.out.println(generation);
 			population = ga.crossoverPopulation(population,endID);
-
+            //System.out.println("Generation 1 " +generation);
 			// Apply mutation
 			population = ga.mutatePopulation(population,startID,endID);
-
+            //System.out.println("generation"+generation);
 			// Evaluate population
 			ga.evalPopulation(population , endID);
 
@@ -132,7 +132,8 @@ public class BrainGame{
             //System.out.println("Generation : "+generation);
             population.toString(generation);
 			// Increment the current generation
-			generation++;
+
+            generation++;
 		}
 
         Individual bestIndividual = population.getFittest(0);

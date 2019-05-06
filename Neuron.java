@@ -7,6 +7,7 @@
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.HashSet;
 
 /**
  *
@@ -110,11 +111,27 @@ public class Neuron {
         return synapseList.get(getIndexOf(toID)).getDistance();
     }
 
-    public int getRandomNext(){
-        Random rand = new Random();
-        Random r = new Random();
-        int temp = r.nextInt(synapseList.size());
-        return synapseList.get(temp).getID();
+    public int getRandomNext(HashSet<Integer> set){
+        //boolean cond = false;
+        for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){
+            if(!(set.contains(synapseList.get(iterate).getID()))){
+                //cond = true;
+                return synapseList.get(iterate).getID();
+            }
+        }
+        /*if(cond){
+            Random r = new Random();
+            int temp = r.nextInt(synapseList.size());
+            while(set.contains(synapseList.get(temp).getID())){
+                temp= r.nextInt(synapseList.size());
+                System.out.println("fjafs");
+            }
+            int nextNode=synapseList.get(temp).getID();
+            return nextNode;
+        }else{
+            return -1;
+        }*/
+        return -1;
     }
 
 }

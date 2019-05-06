@@ -63,9 +63,9 @@ public class GeneticAlgorithm {
         // get a calculation for fitness
         double fitness = 1/(double)individual.getTime();;
         if(individual.getGoal()){
-            fitness = fitness*50;
+            fitness = fitness*1000;
         }else{
-            fitness = fitness*-50;
+            fitness = fitness*-1000;
         }
 
         // Store fitness
@@ -125,13 +125,23 @@ public class GeneticAlgorithm {
         Population newPopulation = new Population(this.treemap,population.size());
 
         // Loop over current population by fitness
-        for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
+        for (int populationIndex = 0; populationIndex < 40 ; populationIndex++) {
             // Get parent1
             Individual parent1 = population.getFittest(populationIndex);
             parent1.checkGoal(endID);
             //if the individual does not reach goal get random next
             if(!parent1.getGoal()){
-                parent1.getPath().addLast(treemap.get(parent1.getPath().peekLast()).getRandomNext());
+                if( treemap.get(parent1.getPath().peekLast()).getRandomNext(parent1.getHashSet()) == -1 ){
+                    int temp = parent1.getPath().getFirst();
+                    parent1.getPath().clear();
+                    parent1.getPath().add(temp);
+                    parent1.getHashSet().clear();
+                    parent1.getHashSet().add(temp);
+                    parent1.checkGoal(endID);
+                    //parent1 = new Individual(treemap , parent1.getPath().getFirst() , endID , parent1.getPath().size());
+                }
+                parent1.getPath().addLast(treemap.get(parent1.getPath().peekLast()).getRandomNext(parent1.getHashSet()));
+                parent1.getHashSet().add(parent1.getPath().getLast());
                 parent1.calculateTime();
                 parent1.calculateDistance();
             }
@@ -143,7 +153,10 @@ public class GeneticAlgorithm {
                 Individual offspring = parent1;
                 //to prevent crossover with individual that havent reach goal
                 if(!(parent1.getGoal() == false && parent2.getGoal() == false)){
-                    for(int i = 0 ; i < parent1.getPath().size() ; i++){
+
+                    int counter1 = parent1.getPath().size();
+                    for(int i = 0 ; i < counter1 ; i++){
+                        //System.out.println(1);
                         if(parent2.getPath().contains(parent1.getPath().get(i))){
                             int neuron = parent1.getPath().get(i);
                             int index1 = parent1.getPath().indexOf(neuron);
@@ -153,55 +166,70 @@ public class GeneticAlgorithm {
                                     //parent2 behind
                                     //remove the neuron behind of the parent1
                                     while(offspring.getPath().peekLast() != neuron){
-                                        offspring.getPath().removeLast();
+                                        int remove = offspring.getPath().removeLast();
+                                        offspring.getHashSet().remove(remove);
+                                        //System.out.println(2);
                                     }
                                     // add the neuron behind of the parent2
-                                    int temp = parent2.getPath().size();
-                                    for(int iterate = index2+1 ; iterate < temp ; iterate++){
+                                    for(int iterate = index2+1 ; iterate < parent2.getPath().size() ; iterate++){
                                         offspring.getPath().add(parent2.getPath().get(iterate));
+                                        offspring.getHashSet().add(offspring.getPath().getLast());
+                                        //System.out.println(3);
                                     }
                                 }else{
                                     //parent 2 infront
                                     //remove the neuron infront of the parent1
                                     while(offspring.getPath().peek() != neuron){
-                                        offspring.getPath().remove();
+                                        int remove = offspring.getPath().remove();
+                                        offspring.getHashSet().remove(remove);
+                                        //System.out.println(4);
                                     }
                                     // add the neuron infront of the parent 2
                                     for(int iterate = index2-1 ; iterate > -1 ; iterate--){
                                         offspring.getPath().addFirst(parent2.getPath().get(iterate));
+                                        offspring.getHashSet().add(parent2.getPath().get(iterate));
+                                        //System.out.println(5);
                                     }
 
                                 }
+
                             }else if(parent1.getGoal() == true && parent2.getGoal() == false){
                                 //parent1 behind
                                 //remove the neuron infront of the parent1
                                 while(offspring.getPath().peek() != neuron){
-                                    offspring.getPath().remove();
+                                    int remove = offspring.getPath().remove();
+                                    offspring.getHashSet().remove(remove);
+                                    //System.out.println(6);
                                 }
                                 // add the neuron infront of the parent 2
                                 for(int iterate = index2-1 ; iterate > -1 ; iterate--){
                                     offspring.getPath().addFirst(parent2.getPath().get(iterate));
+                                    offspring.getHashSet().add(parent2.getPath().get(iterate));
+                                    //System.out.println(7);
                                 }
                             }else{
                                 //parent2 behind
                                 //remove the neuron behind of the parent1
                                 while(offspring.getPath().peekLast() != neuron){
-                                    offspring.getPath().removeLast();
+                                    int remove = offspring.getPath().removeLast();
+                                    offspring.getHashSet().remove(remove);
+                                    //System.out.println(8);
                                 }
                                 // add the neuron behind of the parent2
-                                int temp = parent2.getPath().size();
-                                for(int iterate = index2+1 ; iterate < temp ; iterate++){
+                                for(int iterate = index2+1 ; iterate < parent2.getPath().size() ; iterate++){
                                     offspring.getPath().add(parent2.getPath().get(iterate));
+                                    offspring.getHashSet().add(offspring.getPath().getLast());
+                                    //System.out.println(9);
                                 }
                             }
                             break;
                         }
                     }
+                    //offspring.checkLoop(offspring.getPath());
+                    offspring.checkGoal(endID);
+                    offspring.calculateTime();
+                    offspring.calculateDistance();
                 }
-                offspring.checkLoop(offspring.getPath());
-                offspring.checkGoal(endID);
-                offspring.calculateTime();
-                offspring.calculateDistance();
                 newPopulation.setIndividual(populationIndex, offspring);
             } else {
                 // Add individual to new population without applying crossover
@@ -242,7 +270,7 @@ public class GeneticAlgorithm {
                     // If mutataion occurs generate a new path
                     int length = population.getFittest(0).getPath().size();
                     individual = new Individual(treemap , startID , endID , length );
-                    individual.checkLoop(individual.getPath());
+                    //individual.checkLoop(individual.getPath());
                     individual.calculateTime();
                     individual.calculateDistance();
                 }
