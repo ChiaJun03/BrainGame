@@ -81,6 +81,10 @@ public class SearchSpace {
     public void clear() {
         space.clear();
     }
+    
+    public Neuron get(int ID){
+        return space.get(ID);
+    }
 
     /**
      * Convert all the info in search space to string
@@ -101,6 +105,14 @@ public class SearchSpace {
 
     public boolean hasNext(int id, int currentNode) {
         return space.get(id).hasNext(currentNode);
+    }
+    
+    public String checkNode(int id){
+        String output = "";
+        for (Map.Entry<Integer, Neuron> entry : space.entrySet())
+            if(entry.getValue().containsSynapse(id))
+                output+=true;
+        return output;
     }
 
     private int minTime = Integer.MAX_VALUE;
@@ -219,7 +231,6 @@ public class SearchSpace {
                 for(int i = 0 ; i< close.size() -1 ; i++){
                     if(space.get(check).containsBFSParent(close.get(i))){
                         temp.addFirst(close.get(i));
-                        System.out.println(close.get(i));
                         check = close.get(i);
                         if(i !=0 )
                             i = -1; /// here is the prob
@@ -238,6 +249,7 @@ public class SearchSpace {
                     goal.add(temp.get(k));
                 }
                 pathList.add((Stack)goal.clone());
+                goal.clear();
                 timeList.add(currentTime);
                 System.out.println("Get goal ! "+front);
                 }
@@ -249,7 +261,7 @@ public class SearchSpace {
                     if (space.get(next).checkVisit() == false) {
                         open.add(next);
                         System.out.println("Explore the node below "+front+" : "+next+" is found.");
-                        System.out.println(next+" is added into the queue");
+                        System.out.println(next+" is added into the open queue");
                         connection = nextNode(front,connection);
                     }else{
                         System.out.println("The Node is explored");
