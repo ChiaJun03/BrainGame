@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 public class Population {
-	
+
 	private TreeMap<Integer , Neuron> treemap;
 	private Individual population[];
 	private double populationFitness = -1;
@@ -70,6 +70,20 @@ public class Population {
 
 		// Return the fittest individual
 		return this.population[offset];
+	}
+
+	public void arrange(){
+		Arrays.sort(this.population, new Comparator<Individual>() {
+			@Override
+			public int compare(Individual o1, Individual o2) {
+				if (o1.getFitness() > o2.getFitness()) {
+					return -1;
+				} else if (o1.getFitness() < o2.getFitness()) {
+					return 1;
+				}
+				return 0;
+			}
+		});
 	}
 
 	/**

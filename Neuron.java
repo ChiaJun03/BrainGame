@@ -111,7 +111,10 @@ public class Neuron {
     }
 
     public int getRandomNext(){
-        return synapseList.get((int)(Math.random()*synapseList.size())).getID();
+        Random rand = new Random();
+        Random r = new Random();
+        int temp = r.nextInt(synapseList.size());
+        return synapseList.get(temp).getID();
     }
 
 }

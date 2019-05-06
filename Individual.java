@@ -18,7 +18,7 @@ public class Individual {
 	 * @param treemap the treemap of ID and Neuron
 	 * @param path the indivodual's path
 	 * @param endID the end node of the search
-	 
+
 	public Individual(TreeMap<Integer , Neuron> treemap , LinkedList<Integer> path ,int endID) {
 		// Create individual path
 		this.path = path;
@@ -75,14 +75,14 @@ public class Individual {
 	*	@param list the LinkedList path that to be check
 	*/
     public void checkLoop(LinkedList<Integer> list){
-		for(int iterate : list){
-			if(list.indexOf(iterate)!=list.lastIndexOf(iterate)){
-				int temp1 = list.indexOf(iterate);
-				int temp2 = list.lastIndexOf(iterate);
+		for(int iterate = 0 ; iterate < list.size();iterate++){
+			if(list.indexOf(list.get(iterate))!=list.lastIndexOf(list.get(iterate))){
+				int temp1 = list.indexOf(list.get(iterate));
+				int temp2 = list.lastIndexOf(list.get(iterate));
 				for(int i = temp1 ; i < temp2 ; i++){
 					list.remove(temp1);
 				}
-				break;
+				//regenerateBack(list,temp2-temp1);
 			}
 		}
     }
@@ -155,7 +155,7 @@ public class Individual {
 		for(int i = 0 ; i<path.size();i++){
 			System.out.print(path.get(i)+" ");
 		}
-		System.out.println(getGoal());
+		System.out.println(getGoal()+" Fitness: "+getFitness() +" Time: "+getTime());
 		System.out.println();
 		return "";
 	}

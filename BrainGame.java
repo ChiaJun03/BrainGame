@@ -28,6 +28,7 @@ public class BrainGame{
 
     }
 
+
     public static void main(String[] args) {
         //launch(args);
         Stack<Integer> test = new Stack<>();
@@ -51,7 +52,7 @@ public class BrainGame{
 
         testCase(simulation);
         System.out.println("Start Searching \n");
-        searchGA(simulation,1,20);
+        searchGA(simulation,1,10);
     }
 /*
         System.out.println(simulation.toString());
@@ -82,7 +83,7 @@ public class BrainGame{
 */
     public static void testCase(SearchSpace simulation){
         Random random = new Random();
-        int maxNode = 200;
+        int maxNode = 50;
         int num,toID;
         for(int iterate = 1; iterate <= maxNode ; iterate++){
             simulation.addNode(iterate,num=random.nextInt(maxNode-2)+1, random.nextInt(9)+1);
@@ -93,6 +94,7 @@ public class BrainGame{
                 }
                 simulation.addSynapse(iterate,toID,random.nextInt(19)+1 , random.nextInt(9)+1);
             }
+            System.out.println(iterate);
         }
     }
 
@@ -101,14 +103,19 @@ public class BrainGame{
 
 
     public static void searchGA(SearchSpace treeObject , int startID , int endID){
+        int populationSize = 50;
+        double crossoverRate = 0.8;
+        double mutationRate = 0.3;
+        int elitismCount = (int)(populationSize*0.1);
+        int tournamentSize = (int)(populationSize*0.6) ;
         //Initialize GA (treemap,populationSize,mutationRate,crossoverRate,elitismCount,tournamentsize)
-        GeneticAlgorithm ga = new GeneticAlgorithm(treeObject, 100,0.3,0.8,25,65);
+        GeneticAlgorithm ga = new GeneticAlgorithm(treeObject,populationSize,mutationRate,crossoverRate,elitismCount,tournamentSize);
 
         //Initialize population
         Population population = ga.initPopulation(startID);
         ga.evalPopulation(population,endID);
         int generation = 1;
-        int maxGenerations = 3000;
+        int maxGenerations = 100;
         while (ga.isTerminationConditionMet(generation, maxGenerations) == false) {
 			// Print fittest individual from population
 
@@ -121,8 +128,9 @@ public class BrainGame{
 			// Evaluate population
 			ga.evalPopulation(population , endID);
 
+            population.arrange();
+            //System.out.println("Generation : "+generation);
             population.toString(generation);
-
 			// Increment the current generation
 			generation++;
 		}
