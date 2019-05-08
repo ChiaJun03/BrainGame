@@ -14,6 +14,7 @@ import java.util.TreeMap;
  */
 public class SearchSpace {
     private TreeMap<Integer, Neuron> space;
+    private TreeMap<Integer, Node> BFSspace;
     
     
     /**A constructor that create a tree map with
@@ -40,6 +41,7 @@ public class SearchSpace {
      */
     public void addSynapse(int fromID, int toID, int time, int distance){
         space.get(fromID).addSynapse(toID, time, distance);
+        space.get(toID).addBFSNode(fromID, toID, time);
     }
     
     /**Remove a specific node from search space.
