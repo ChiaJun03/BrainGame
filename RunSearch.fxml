@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="braingamegui.RunSearchController">
+    <stylesheets>
+        <URL value="@runsearch.css" />
+    </stylesheets>
+   <children>
+      <ImageView fitHeight="607.0" fitWidth="987.0" pickOnBounds="true" preserveRatio="true" styleClass="anchorpanebckgrd" />
+      <ImageView fitHeight="30.0" fitWidth="36.0" layoutX="4.0" onMouseClicked="#back_to_main" pickOnBounds="true" preserveRatio="true" styleClass="backbtn" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="header2" layoutX="187.0" layoutY="25.0" styleClass="header" text="Breadth-First Search">
+         <font>
+            <Font size="45.0" />
+         </font>
+         <effect>
+            <DropShadow offsetX="7.0" offsetY="5.0" />
+         </effect>
+      </Label>
+      <Label layoutX="50.0" layoutY="121.0" text="Input">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="266.0" layoutY="506.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" ripplerFill="WHITE" styleClass="searchbtn" text="Search">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
