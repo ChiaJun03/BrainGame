@@ -282,4 +282,38 @@ public class GeneticAlgorithm {
         // Return mutated population
         return newPopulation;
     }
+
+    public void search(int startID,int endID){
+
+        //Initialize population
+        Population population = initPopulation(startID);
+        evalPopulation(population,endID);
+        int generation = 1;
+        int maxGenerations = 100;
+        while (isTerminationConditionMet(generation, maxGenerations) == false) {
+			// Print fittest individual from population
+
+			// Apply crossover
+            //System.out.println(generation);
+			population = crossoverPopulation(population,endID);
+            //System.out.println("Generation 1 " +generation);
+			// Apply mutation
+			population = mutatePopulation(population,startID,endID);
+            //System.out.println("generation"+generation);
+			// Evaluate population
+			evalPopulation(population , endID);
+
+            population.arrange();
+            //System.out.println("Generation : "+generation);
+            population.toString(generation);
+			// Increment the current generation
+
+            generation++;
+		}
+
+        Individual bestIndividual = population.getFittest(0);
+        System.out.println("Stopped after " + maxGenerations + " generations.");
+        System.out.println(bestIndividual);
+    }
+
 }
