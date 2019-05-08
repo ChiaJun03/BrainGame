@@ -30,8 +30,6 @@ import javax.swing.JOptionPane;
 public class FXMLDocumentController implements Initializable {
 
     @FXML
-    private ImageView logo;
-    @FXML
     private AnchorPane content_area;
     @FXML
     private JFXButton runbtn;
@@ -42,7 +40,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private JFXCheckBox astar;
     @FXML
-    private JFXCheckBox generic;
+    private ImageView closebtn;
+    @FXML
+    private JFXCheckBox basic;
+    @FXML
+    private JFXCheckBox prune;
+    @FXML
+    private JFXCheckBox genetic;
     
     
     @Override
@@ -58,25 +62,30 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public void run_search(MouseEvent event) throws IOException {
-       if(bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!generic.isSelected()){
+       if(bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected()){
            AnchorPane pane=FXMLLoader.load(getClass().getResource("RunSearch.fxml"));
            content_area.getChildren().removeAll();
-           content_area.getChildren().setAll(pane); 
-           
-           
+           content_area.getChildren().setAll(pane);  
        }
-       else if (dfs.isSelected()&&!bfs.isSelected()&&!astar.isSelected()&&!generic.isSelected()){
-         // load another fxml
+       
+       else if (!bfs.isSelected()&&dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected()){
+         // load dfs fxml
          
        }
-       else if (astar.isSelected()&&!dfs.isSelected()&&!bfs.isSelected()&&!generic.isSelected()){
-         // load another fxml
+       else if (!bfs.isSelected()&&!dfs.isSelected()&&astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected()){
+         // load astar fxml
        }
-       else if (generic.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!bfs.isSelected()){
-         // load another fxml
+       else if (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected()){
+         // load generic fxml
+       }
+       else if (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&basic.isSelected()&&!prune.isSelected()){
+         // load basic fxml
+       }
+       else if (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&prune.isSelected()){
+         // load prune fxml
        }
        else{ // Error message
-          if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!generic.isSelected()){
+          if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected()){
               JOptionPane.showMessageDialog(null,"Please select a search method to proceed.", "Error", 0);
           }
           else{

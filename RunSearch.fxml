@@ -26,7 +26,7 @@
             <DropShadow offsetX="7.0" offsetY="5.0" />
          </effect>
       </Label>
-      <Label layoutX="50.0" layoutY="121.0" text="Input">
+      <Label layoutX="50.0" layoutY="121.0" text="Input" textFill="WHITE">
          <font>
             <Font size="31.0" />
          </font>
@@ -36,5 +36,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </JFXButton>
+      <JFXTextField layoutX="50.0" layoutY="186.0" prefHeight="31.0" prefWidth="135.0" promptText="Enter your name" styleClass="textfield" stylesheets="@runsearch.css" unFocusColor="WHITE" />
+      <JFXTextField layoutX="50.0" layoutY="239.0" prefHeight="31.0" prefWidth="135.0" promptText="Enter your age" unFocusColor="WHITE" />
    </children>
 </AnchorPane>

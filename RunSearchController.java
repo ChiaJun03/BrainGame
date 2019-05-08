@@ -72,6 +72,7 @@ public class RunSearchController implements Initializable {
         trans.setToY(15);
         trans.setCycleCount(4); //TranslateTransition.INDEFINITE
         trans.setAutoReverse(true);
+        trans.setCycleCount(ScaleTransition.INDEFINITE);
         trans.play();  
     }
     //animation effect for text /object

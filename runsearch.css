@@ -50,3 +50,11 @@
    -fx-border-style: solid;
    -fx-border-radius: 3px;
 }
+
+.textfield{
+    -fx-text-fill: white;  
+}
+
+.textfield:empty{
+    -fx-text-fill: red;  
+}

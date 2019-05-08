@@ -23,11 +23,17 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </JFXButton>
-      <JFXCheckBox fx:id="bfs" layoutX="456.0" layoutY="319.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Breadth First Search" />
-      <JFXCheckBox fx:id="dfs" layoutX="456.0" layoutY="355.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Depth First Search" />
-      <JFXCheckBox fx:id="astar" layoutX="457.0" layoutY="388.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="A* Pruning Search" />
-      <JFXCheckBox fx:id="generic" layoutX="456.0" layoutY="423.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Generic Search" />
-      <Label layoutX="450.0" layoutY="259.0" text="Search Method">
+      <VBox layoutX="456.0" layoutY="217.0" spacing="20.0">
+         <children>
+            <JFXCheckBox fx:id="basic" layoutX="435.0" layoutY="108.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Basic Search" />
+            <JFXCheckBox fx:id="bfs" layoutX="451.0" layoutY="168.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Breadth First Search" />
+            <JFXCheckBox fx:id="dfs" layoutX="462.0" layoutY="239.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Depth First Search" />
+            <JFXCheckBox fx:id="astar" layoutX="456.0" layoutY="290.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="A* Search" />
+            <JFXCheckBox fx:id="prune" layoutX="462.0" layoutY="330.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Pruning Search" />
+            <JFXCheckBox fx:id="genetic" layoutX="456.0" layoutY="423.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Genetic Search" />
+         </children>
+      </VBox>
+      <Label layoutX="456.0" layoutY="141.0" text="Search Method">
          <font>
             <Font size="34.0" />
          </font>
