@@ -6,6 +6,7 @@
 package braingame;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.Stack;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -21,33 +22,18 @@ import javafx.stage.Stage;
  * @author Jing Chong
  */
 public class BrainGame{
-    //protected static final int WIDTH = 1000, HEIGHT = 850;
     
     public BrainGame(){
         
     }
 
     public static void main(String[] args) {
-        //launch(args);
+        Random rand = new Random();
         Stack<Integer> test = new Stack();
         SearchSpace simulation = new SearchSpace();
-        simulation.addNode(1, 4, 1);
-        simulation.addNode(2, 1, 1);
-        simulation.addNode(3, 1, 1);
-        simulation.addNode(4, 1, 1);
-        simulation.addNode(5, 1, 1);
+        testCase(simulation);
         
-        simulation.addSynapse(1, 2, 2, 5);
-        simulation.addSynapse(1, 3, 4, 3);
-        simulation.addSynapse(1, 4, 1, 1);
-        simulation.addSynapse(1, 5, 3, 2);
-        simulation.addSynapse(2, 4, 5, 1);
-        simulation.addSynapse(3, 5, 2, 4);
-        simulation.addSynapse(4, 3, 4, 4);
-        simulation.addSynapse(5, 2, 4, 4);
-        
-        
-        System.out.println(simulation.toString());
+        System.out.println(simulation);
         
         //simulation.removeNode(2);
         
@@ -55,24 +41,53 @@ public class BrainGame{
         
         //System.out.println(simulation.nextNode(1, 0));
         
-        System.out.println("Search path from node 1 to node 5:");
-        simulation.search(1, 2);
-        simulation.solution();
+        int start = rand.nextInt(99)+1;
+        int end = rand.nextInt(99)+1;
+        while(end==start)
+            end = rand.nextInt(99)+1;
+        System.out.println("Search path from node "+start+" to node "+end+":");
+        
+        
+        /*
+        DepthFirstSearch DFS = new DepthFirstSearch(simulation);
+        DFS.search(start, end);
+        System.out.println(DFS);
+        */
+        
+        /*
+        BasicSearch DFSS = new BasicSearch(simulation);
+        DFSS.search(start, end);
+        System.out.println(DFSS);
+        */
+        
+        
+        PruneSearch pruning = new PruneSearch(simulation);
+        pruning.search(start, end);
+        System.out.println(pruning);
+        
+        
+        /*
+        AStarSearch search = new AStarSearch(simulation);
+        System.out.println(search);
+        //search.search(1, 2);
+        */
         
     }
     
-
-    /*
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        Scene newScene = new Scene(root, WIDTH, HEIGHT);
-        primaryStage.setScene(newScene);
-        primaryStage.setTitle("Brain Game");
-        primaryStage.show();
-        
+    public static void testCase(SearchSpace simulation){
+        Random rand = new Random();
+        int id = 100;
+        int num, toID;
+        for(int i=1; i<=id; i++){
+            simulation.addNode(i, num = rand.nextInt(10-2)+1, rand.nextInt(9)+1);
+            for(int j=0; j<num; j++){
+                toID = rand.nextInt(id-1)+1;
+                while(simulation.get(i).containsSynapse(toID)||toID==i)
+                    toID = rand.nextInt(id-1)+1;
+                simulation.addSynapse(i, toID, rand.nextInt(19)+1, rand.nextInt(9)+1);
+            }
+        }
     }
-*/
     
     
 }

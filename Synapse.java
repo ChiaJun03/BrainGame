@@ -9,10 +9,10 @@ package braingame;
  *
  * @author Jing Chong
  */
-public class Synapse {
+public class Synapse{
     private int toID;
-    private int time;
-    private int distance;
+    private Integer time;
+    private Integer distance;
     
     /**A constructor that create a synapse with specific toID, time and distance.
      * @param toID
@@ -25,11 +25,11 @@ public class Synapse {
         this.distance = distance;
     }
     
-    public int getTime(){
+    public Integer getTime(){
         return this.time;
     }
 
-    public int getDistance(){
+    public Integer getDistance(){
         return this.distance;
     }
 
@@ -40,4 +40,5 @@ public class Synapse {
     public String toString(){
         return "ID: "+toID+"\tTime: "+time+"\tDistance: "+distance+"\n";
     }
+
 }

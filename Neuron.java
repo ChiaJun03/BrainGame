@@ -15,6 +15,7 @@ public class Neuron {
     private Integer lifetime;
     private Integer connectNum;
     private ArrayList<Synapse> synapseList;
+    private boolean visitStatus;
     
     /**A constructor that create an object with 
      * specific lifetime and number of connected node.
@@ -65,12 +66,41 @@ public class Neuron {
             for(Synapse ptr: synapseList)
                 info += ptr.toString();
         else
-            info += "No Connection";
+            info += "No Connection\n";
         return info;
     }
     
-    public void addSynapse(int toID, int time, int distance){
-        synapseList.add(new Synapse(toID, time, distance));
+    public void setVisit(boolean status){
+        this.visitStatus = status;
+    }
+    
+    public boolean getVisit(){
+        return this.visitStatus;
+    }
+    
+    public void addSynapse(int toID, Integer time, int distance){
+        if(synapseList.size()==0)
+            synapseList.add(new Synapse(toID, time, distance));
+        else
+            for(int i=0; i<synapseList.size(); i++){
+                if(synapseList.get(i).getTime().compareTo(time)>=0){
+                    if(synapseList.get(i).getTime().compareTo(time)==0){
+                        if(synapseList.get(i).getDistance().compareTo(distance)<0){
+                            synapseList.add(i+1, new Synapse(toID, time, distance));
+                            break;
+                        }else{
+                            synapseList.add(i, new Synapse(toID, time, distance));
+                            break;
+                        }
+                    }else{
+                        synapseList.add(i, new Synapse(toID, time, distance));
+                        break;
+                    }
+                }else if(i == synapseList.size()-1){
+                    synapseList.add(new Synapse(toID, time, distance));
+                    break;
+                }
+            }
     }
     
     public void removeSynapse(int toID){
@@ -107,5 +137,9 @@ public class Neuron {
     
     public int getDistanceTo(int toID){
         return synapseList.get(getIndexOf(toID)).getDistance();
+    }
+    
+    public ArrayList<Synapse> getSynapseList(){
+        return this.synapseList;
     }
 }

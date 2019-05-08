@@ -5,9 +5,7 @@
  */
 package braingame;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Stack;
 import java.util.TreeMap;
 
 /**
@@ -16,9 +14,6 @@ import java.util.TreeMap;
  */
 public class SearchSpace {
     private TreeMap<Integer, Neuron> space;
-    private Stack<Integer> goal = new Stack();
-    private ArrayList<Stack> pathList = new ArrayList();
-    private ArrayList<Integer> timeList = new ArrayList();
     
     
     /**A constructor that create a tree map with
@@ -64,6 +59,10 @@ public class SearchSpace {
         space.clear();
     }
     
+    public int getSize(){
+        return space.size();
+    }
+    
     /**Convert all the info in search space to string
      * @return a string contain all instances in this class
      */
@@ -83,106 +82,9 @@ public class SearchSpace {
         return space.get(id).hasNext(currentNode);
     }
     
-    private int minTime = Integer.MAX_VALUE;
-    private int currentTime = 0;
-    private int cycle = 0;
-    
-    public void search(int start, int end){
-        pruneSearch(start, end, 0);
+    public Neuron get(int id){
+        return space.get(id);
     }
-    
-    public void completeSearch(int start, int end, int connection){
-        System.out.println("Current connected node "+start+": "+connection+"s");
-        if(start == end){
-            currentTime+=space.get(goal.peek()).getTimeTo(start);
-            goal.push(start);
-            System.out.println("Push "+start+" into stack");
-            System.out.println("goal!");
-            pathList.add((Stack)goal.clone());
-            timeList.add(currentTime);
-            goal.pop();
-            currentTime-=space.get(goal.peek()).getTimeTo(start);
-            System.out.println("Pop "+start+" from stack");
-            cycle++;
-        }else if(hasNext(start, connection)){
-            if(!goal.empty())
-                currentTime+=space.get(goal.peek()).getTimeTo(start);
-            goal.push(start);
-            System.out.println("Push "+start+" into stack");
-            System.out.println("Next Node: "+nextNode(start, connection));
-            search(nextNode(start, connection), end);
-            connection = nextNode(start, connection);
-            System.out.println("last: "+connection+"s");
-            goal.pop();
-            if(!goal.empty())
-                currentTime-=space.get(goal.peek()).getTimeTo(start);
-            System.out.println("Pop "+start+" from stack");
-            completeSearch(start, end, connection);
-            cycle++;
-        }
-    }
-    
-    
-    public void pruneSearch(int start, int end, int connection){
-        System.out.println("MinTime: "+minTime+"s");
-        System.out.println("Current connected node "+start+": "+currentTime+"s");
-        if(start == end){
-            currentTime+=space.get(goal.peek()).getTimeTo(start);
-            if(currentTime<=minTime){
-                goal.push(start);
-                System.out.println("Push "+start+" into stack");
-                System.out.println("goal!");
-                pathList.add((Stack)goal.clone());
-                minTime = currentTime;
-                timeList.add(minTime);
-                goal.pop();
-                currentTime-=space.get(goal.peek()).getTimeTo(start);
-                System.out.println("Pop "+start+" from stack");
-                cycle++;
-            }else{
-                currentTime-=space.get(goal.peek()).getTimeTo(start);
-                System.out.println("///Prune!///");
-            }
-        }else if(hasNext(start, connection)){
-            if(!goal.empty())
-                currentTime+=space.get(goal.peek()).getTimeTo(start);
-            if(currentTime<=minTime){
-                goal.push(start);
-                System.out.println("Push "+start+" into stack");
-                System.out.println("Next Node: "+nextNode(start, connection));
-                search(nextNode(start, connection), end);
-                connection = nextNode(start, connection);
-                System.out.println("Current Time: "+currentTime+"s");
-                goal.pop();
-                if(!goal.empty())
-                    currentTime-=space.get(goal.peek()).getTimeTo(start);
-                System.out.println("Pop "+start+" from stack");
-                pruneSearch(start, end, connection);
-                cycle++;
-            }else{
-                currentTime-=space.get(goal.peek()).getTimeTo(start);
-                System.out.println("///Prune!///");
-            }
-        }
-    }
-    
-    
-    public void solution(){
-        int i=0;
-        System.out.println("");
-        System.out.println("");
-        System.out.println(pathList.size()+" path(s) found!");
-        for(Stack ptr: pathList){
-            while(!ptr.empty())
-                System.out.print(ptr.pop()+"<-");
-            System.out.println("\nTime used: "+timeList.get(i));
-            i++;
-            System.out.println("");
-        }
-        System.out.println("Cycle: "+cycle);
-
-    }
-
 
     
 }
