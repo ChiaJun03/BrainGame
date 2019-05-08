@@ -55,6 +55,3 @@
     -fx-text-fill: white;  
 }
 
-.textfield:empty{
-    -fx-text-fill: red;  
-}
