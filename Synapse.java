@@ -11,6 +11,7 @@ package braingame;
  */
 public class Synapse{
     private int toID;
+    private Neuron toNeuron;
     private Integer time;
     private Integer distance;
     
@@ -39,6 +40,10 @@ public class Synapse{
     
     public String toString(){
         return "ID: "+toID+"\tTime: "+time+"\tDistance: "+distance+"\n";
+    }
+    
+    public Neuron getNeuron(){
+        return this.toNeuron;
     }
 
 }
