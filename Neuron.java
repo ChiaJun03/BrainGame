@@ -146,43 +146,6 @@ public class Neuron {
         return this.synapseList;
     }
     
-    public void addBFSNode(int parent ,int toID ,int time){
-       nodeList.add(new Node(parent , toID , time));
-    }
-    
-    public int getIndexOfBFSNode(int id){
-        for(Node ptr:nodeList){
-            if(ptr.getId() == id)
-                return nodeList.indexOf(ptr);
-        }
-        return -1;
-    }
-    
-    public int getIndexOfBFSParent(int parent){
-        for(Node ptr : nodeList){
-            if(ptr.getParent()==parent)
-                return nodeList.indexOf(ptr)+1;
-        }
-        return -1;
-    }
-    
-    public boolean containsBFSNode(int id){
-        return  getIndexOfBFSNode(id)!=-1;
-    }
-    
-    
-    public boolean containsBFSParent(int parent){
-        return getIndexOfBFSParent(parent) != -1 ;
-    }
-    
-    public int getParentOf(int id){
-        return nodeList.get(getIndexOfBFSNode(id)).getParent();
-    }
-    
-    public int getTime(int id){
-        return nodeList.get(id).getTime();
-    }
-    
     public int getRandomNext(HashSet<Integer> set){
         //boolean cond = false;
         for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){

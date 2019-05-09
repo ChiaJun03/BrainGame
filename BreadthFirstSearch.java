@@ -1,7 +1,7 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this goallate file, choose Tools | goallates
+ * and open the goallate in the editor.
  */
 package braingame;
 
@@ -10,23 +10,20 @@ import java.util.LinkedList;
 
 /**
  *
- * @author Jing Chong
+ * @author Chia Jun
  */
 public class BreadthFirstSearch {
-    private LinkedList<Integer> open = new LinkedList();
-    private LinkedList<Integer> close = new LinkedList();
-    private LinkedList<Integer> temp = new LinkedList();
     private SearchSpace space;
     private int currentTime;
+    private Node front;
+    private ArrayList<Node> open, close;
     private ArrayList<Integer> goal;
-    private ArrayList<Integer> timeList;
-    private ArrayList<ArrayList<Integer>> pathList;
     
     public BreadthFirstSearch(SearchSpace space){
         this.space = space;
+        open = new ArrayList();
+        close = new ArrayList();
         goal = new ArrayList();
-        timeList = new ArrayList();
-        pathList = new ArrayList();
         currentTime = 0;
     }
     
@@ -36,86 +33,93 @@ public class BreadthFirstSearch {
 
     public void breadthFirstSearch(int start, int end, int connection) {
         System.out.println("Current Node : " + start);
-        open.add(start);
+        open.add(new Node(-1, start));
         System.out.println("Add "+start+" into open queue.");
         while (!open.isEmpty()) {
-            int front = open.remove(0);
+            front = open.remove(0);
             close.add(front);
-            space.get(front).setVisit(true);
-            System.out.println(front+" is removed from open queue and push into close stack.");
+            space.get(front.getId()).setVisit(true);
+            System.out.println(front.getId()+" is removed from open queue and push into close stack.");
             connection = 0;
-            if (front == end) {
-                int check = end ;
-                temp.addFirst(end);
+            if (front.getId() == end) {
+                goal.add(0, end);
+                System.out.println("Backtracking...");
                 for(int i = 0 ; i< close.size() -1 ; i++){
-                    if(space.get(check).containsBFSParent(close.get(i))){
-                        temp.addFirst(close.get(i));
-                        check = close.get(i);
+                    if(front.getParent() == close.get(i).getId()){
+                        System.out.println("ID: "+front.getId()+"\tParent: "+front.getParent()+"\tClose ID: "+close.get(i).getId());
+                        goal.add(0, close.get(i).getId());
+                        front = close.get(i);
                         if(i !=0 )
-                            i = -1; /// here is the prob
+                            i = -1; // re-searching from index 0
                         else
-                            i=close.size();
-                    }    
-                }
-                if(temp.get(0) != start){
-                    System.out.println("The start node and end node is not connected !!!");
-                }
-                else{
-                    System.out.println("here!!!!");
-                    for(int j = temp.size()-1  ; j > 0 ; j--){
-                    currentTime += space.get(temp.get(j-1)).getTimeTo(temp.get(j));
-                }
-                for(int k = 0 ; k < temp.size() ; k++){
-                    goal.add(temp.get(k));
-                }
-                pathList.add((ArrayList<Integer>)goal.clone());
-                goal.clear();
-                timeList.add(currentTime);
-                System.out.println("Get goal ! "+front);
-                }
-                open.clear();
-            } else {
-                while (space.hasNext(front, connection)) {
-                    int next = space.nextNode(front, connection);
-                    if (space.get(next).getVisit() == false) {
-                        open.add(next);
-                        System.out.println("Explore the node below "+front+" : "+next+" is found.");
-                        System.out.println(next+" is added into the open queue");
-                        connection = space.nextNode(front,connection);
-                    }else{
-                        System.out.println("The Node is explored");
-                        connection = space.nextNode(front,connection);
+                            break;
                     }
                 }
-                
+                if (goal.get(0) != start){
+                    goal.clear();
+                }else{
+                    for(int j = goal.size()-1  ; j > 0 ; j--){
+                        currentTime += space.get (goal.get(j-1)).getTimeTo (goal.get(j));
+                    }
+                    System.out.println("Get goal ! "+end);
+                }
+                open.clear();
+            }else{
+                while (space.hasNext(front.getId(), connection)) {
+                    int next = space.nextNode(front.getId(), connection);
+                    if (space.get(next).getVisit() == false) {
+                        System.out.println("Explore the node below "+front.getId()+" : "+next+" is found.");
+                        open.add(new Node(front.getId(), next)); System.out.println(next+" is added into the open queue");
+                        connection = space.nextNode(front.getId(),connection);
+                    }else{
+                        System.out.println("The Node is explored");
+                        connection = space.nextNode(front.getId(),connection);
+                    }
+                }
             }
-
         }
     }
     
-    public String showPath(ArrayList<Integer> goal){
+    public String toString(){
         String path = "";
         if(goal.isEmpty())
             path+="No path available";
         else{
             for(Integer ptr: goal)
                 path+=ptr+" -> ";
-            path+=" goal!";
+            path+=" goal!\nTime used: "+currentTime+"s\n";
         }
         return path;
     }
-    
-    public String toString(){
-        int i=0;
-        System.out.println("");
-        String path = "Total of "+pathList.size()+" path(s) is(are) found!\n";
-        if(!pathList.isEmpty()){
-            for(ArrayList<Integer> ptr: pathList){
-                path+=showPath(ptr)+"\nTime used: "+timeList.get(i)+"s\n\n";
-                i++;
-            }
-        }else
-            path+="No path available\n";
-        return path;
+}
+
+/**A special node class to track parent for BFS
+ * 
+ * @author Chia Jun
+ */
+class Node {
+    private int parent ;
+    private int id ;
+
+    public Node(int parent, int id) {
+        this.parent = parent;
+        this.id = id;
     }
+    
+    public int getId(){
+        return this.id;
+    }
+    
+    public void setID(int id){
+        this.id = id ;
+    }
+    
+    public int getParent(){
+        return this.parent;
+    }
+    
+    public void setParent(int parent){
+        this.parent = parent ;
+    }
+    
 }

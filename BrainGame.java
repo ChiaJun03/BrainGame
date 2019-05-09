@@ -30,10 +30,10 @@ public class BrainGame{
         
         //System.out.println(simulation.nextNode(1, 0));
         
-        int start = rand.nextInt(9)+1;
-        int end = rand.nextInt(9)+1;
+        int start = rand.nextInt(9999)+1;
+        int end = rand.nextInt(9999)+1;
         while(end==start)
-            end = rand.nextInt(9)+1;
+            end = rand.nextInt(9999)+1;
         System.out.println("Search path from node "+start+" to node "+end+":");
         
         
@@ -75,15 +75,14 @@ public class BrainGame{
     
     public static void testCase(SearchSpace simulation){
         Random rand = new Random();
-        int id = 10;
+        int id = 10000;
         int num, toID;
-        for(int i=1; i<=id; i++)
-            simulation.addNode(i, rand.nextInt(8)+1, rand.nextInt(9)+1);
         for(int i=1; i<=id; i++){
-            for(int j=0; j<simulation.get(i).getConnectNum(); j++){
-                toID = rand.nextInt(id-1)+1;
+            simulation.addNode(i, num = rand.nextInt(9)+1, rand.nextInt(9)+1);
+            for(int j=0; j<num; j++){
+                toID = rand.nextInt(id)+1;
                 while(simulation.get(i).containsSynapse(toID)||toID==i)
-                    toID = rand.nextInt(id-1)+1;
+                    toID = rand.nextInt(id)+1;
                 simulation.addSynapse(i, toID, rand.nextInt(19)+1, rand.nextInt(9)+1);
             }
         }
