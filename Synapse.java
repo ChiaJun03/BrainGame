@@ -3,48 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//package braingame;
+package braingame;
 
 /**
  *
  * @author Jing Chong
  */
-public class Synapse {
+public class Synapse{
     private int toID;
-    private Neuron toNeuron; // here changed to get neuron object
-    private int time;
-    private int distance;
-
+    private Integer time;
+    private Integer distance;
+    
     /**A constructor that create a synapse with specific toID, time and distance.
      * @param toID
      * @param time
      * @param distance
      */
-    public Synapse (int toID, int time, int distance ,Neuron toNeuron){
+    public Synapse (int toID, int time, int distance){
         this.toID = toID;
         this.time = time;
         this.distance = distance;
-        this.toNeuron = toNeuron;
     }
-
-    public int getTime(){
+    
+    public Integer getTime(){
         return this.time;
     }
 
-    public int getDistance(){
+    public Integer getDistance(){
         return this.distance;
     }
 
     public int getID(){
         return this.toID;
     }
-
+    
     public String toString(){
         return "ID: "+toID+"\tTime: "+time+"\tDistance: "+distance+"\n";
-    }
-
-    public Neuron getNeuron(){
-        return this.toNeuron;
     }
 
 

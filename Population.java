@@ -1,13 +1,23 @@
-//package braingame;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package braingame;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.TreeMap;
 
+/**
+ *
+ * @author Yuan Qing
+ */
 public class Population {
 
 	private TreeMap<Integer , Neuron> treemap;
-	private Individual population[];
+	private Individual[] population;
 	private double populationFitness = -1;
 
 	/**

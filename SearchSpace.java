@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//package braingame;
+package braingame;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Stack;
 import java.util.TreeMap;
 
 /**
@@ -16,18 +14,15 @@ import java.util.TreeMap;
  */
 public class SearchSpace {
     private TreeMap<Integer, Neuron> space;
-    private Stack<Integer> goal = new Stack();
-    private ArrayList<Stack> pathList = new ArrayList();
-    private ArrayList<Integer> timeList = new ArrayList();
-
-
+    
+    
     /**A constructor that create a tree map with
      * Neuron class as key and Attribute class as value.
      */
     public SearchSpace(){
         space = new TreeMap();
     }
-
+    
     /**Add a new node to the search space.
      * @param id is the id of the newly added node
      * @param connectNum is the number of connected node to the newly added node
@@ -36,7 +31,7 @@ public class SearchSpace {
     public void addNode(int id, int connectNum, int lifetime){
         space.put(id, new Neuron(connectNum, lifetime));
     }
-
+    
     /**Add a new connected node info to a specific node.
      * @param fromID is the id of a node in search space
      * @param toID is the id of a node connected to the fromID node
@@ -46,7 +41,7 @@ public class SearchSpace {
     public void addSynapse(int fromID, int toID, int time, int distance){
         space.get(fromID).addSynapse(toID, time, distance);
     }
-
+    
     /**Remove a specific node from search space.
      * @param id is the id of the node want to remove
      */
@@ -57,36 +52,42 @@ public class SearchSpace {
                 entry.getValue().removeSynapse(id);
             }
     }
-
+    
     /**Remove all the nodes in search space.
      */
     public void clear(){
         space.clear();
     }
-
-    public TreeMap<Integer,Neuron> getTreeMap(){
-        return this.space;
+    
+    public int getSize(){
+        return space.size();
     }
+    
     /**Convert all the info in search space to string
      * @return a string contain all instances in this class
      */
+    @Override
     public String toString(){
         String info = "Search Space\n";
         for(Map.Entry<Integer, Neuron> entry: space.entrySet())
             info+="Node ID: "+entry.getKey()+"\t"+entry.getValue().toString()+"\n";
         return info;
     }
-
-
+    
+    
     public int nextNode(int id, int currentNode){
         return space.get(id).getNext(currentNode);
     }
-
+    
     public boolean hasNext(int id, int currentNode){
         return space.get(id).hasNext(currentNode);
     }
-
-   
-
-
+    
+    public Neuron get(int id){
+        return space.get(id);
+    }
+    
+    public TreeMap<Integer, Neuron> getTreeMap(){
+        return this.space;
+    }
 }
