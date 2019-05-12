@@ -1,0 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package braingamegui;
+
+
+import javafx.animation.FadeTransition;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+
+
+/**
+ *
+ * @author Jasmoon
+ */
+public class BrainGameGUI extends Application {
+    
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        stage.initStyle(StageStyle.UNDECORATED);
+        Scene scene = new Scene(root);
+         
+        stage.setScene(scene);
+        stage.show();
+       
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
+}
+
+/*
+FXMLDocumentController control=new FXMLDocumentController();
+        RunSearchController control2 =new RunSearchController();
+        
+        if(control.searchType().equals("bfs")){
+           control2.setText("Breadth First Search");
+        }
+        
+*/

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="content_area" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@mycss.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="braingamegui.FXMLDocumentController">
+   <children>
+      <VBox layoutX="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0" />
+      <Label layoutX="101.0" layoutY="352.0" text="Brain Game" textFill="WHITE">
+         <font>
+            <Font name="Futura Bold Condensed BT" size="50.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="runbtn" buttonType="RAISED" layoutX="456.0" layoutY="471.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#run_search" prefHeight="50.0" prefWidth="300.0" ripplerFill="WHITE" styleClass="runbtn" stylesheets="@mycss.css" text="RUN">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </JFXButton>
+      <VBox layoutX="456.0" layoutY="217.0" spacing="20.0">
+         <children>
+            <JFXCheckBox fx:id="basic" layoutX="435.0" layoutY="108.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Basic Search" />
+            <JFXCheckBox fx:id="bfs" layoutX="451.0" layoutY="168.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Breadth First Search" />
+            <JFXCheckBox fx:id="dfs" layoutX="462.0" layoutY="239.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Depth First Search" />
+            <JFXCheckBox fx:id="astar" layoutX="456.0" layoutY="290.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Best First Search" />
+            <JFXCheckBox fx:id="prune" layoutX="462.0" layoutY="330.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Prune Search" />
+            <JFXCheckBox fx:id="genetic" layoutX="456.0" layoutY="423.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Genetic Search" />
+         </children>
+      </VBox>
+      <Label layoutX="456.0" layoutY="141.0" text="Search Method">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="closebtn" fitHeight="29.0" fitWidth="26.0" layoutX="756.0" layoutY="-5.0" onMouseClicked="#close_program" pickOnBounds="true" preserveRatio="true" styleClass="closebtn" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <ImageView fitHeight="222.0" fitWidth="229.0" layoutX="92.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" styleClass="logo" />
+   </children>
+</AnchorPane>

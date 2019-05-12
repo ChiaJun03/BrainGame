@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="bfspane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: orange;" stylesheets="@breadthfirstsearch.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="braingamegui.BreadthFirstSearchController">
+   <children>
+      <ProgressBar fx:id="progressbar" layoutX="330.0" layoutY="283.0" prefWidth="200.0" styleClass="my-progress-bar" stylesheets="@breadthfirstsearch.css" />
+      <Label layoutX="225.0" layoutY="25.0" styleClass="header" text="Breadth First Search" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="backbtn" fitHeight="33.0" fitWidth="29.0" onMouseClicked="#back_to_main" pickOnBounds="true" preserveRatio="true" styleClass="backbtn" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+   </children>
+</AnchorPane>
