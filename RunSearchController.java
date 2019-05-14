@@ -101,6 +101,7 @@ public class RunSearchController implements Initializable {
         vbox2.setVisible(false);
         sub1.setVisible(false);
         sub2.setVisible(false);
+        searchbtn.setVisible(false);
         
         //noNeuron != 0
         ID.setText("ID "+1);
@@ -170,15 +171,21 @@ public class RunSearchController implements Initializable {
             int amount=Integer.parseInt(noNeuron.getText().trim()); // for message output
             for(int i=1;i<=amount;i++){
              b=i;
-             c=rand.nextInt();
-             int d=rand.nextInt();
+             c=rand.nextInt(amount+1);
+             //set maximum value to 1000??? for d,f,g
+             int d=rand.nextInt(1000);
              //space.addNode(b,c,d);
+               
+               // e can't be equal to b && e can't be same as previous generated e //
+               // Use Arraylist.add()
+               
                for(int j=1;j<=c;j++){
-                   int e=rand.nextInt();
-                   int f=rand.nextInt();
-                   int g=rand.nextInt();
-                   //space.addSynapse(b,e,f,g);
-               }  
+                   //int e=rand.nextInt(); NEED CHANGE
+                   int f=rand.nextInt(1000);
+                   int g=rand.nextInt(1000);
+                   //space.addSynapse(b,Arraylist.get(j),f,g);
+               }
+               
             }
                 if(amount==1){
                     JOptionPane.showMessageDialog(null,"1 neuron have been generated completely. Please click Search to proceed.");
@@ -186,6 +193,7 @@ public class RunSearchController implements Initializable {
                 else{
                     JOptionPane.showMessageDialog(null,amount+" neurons have been generated completely. Please click Search to proceed.");
                 }
+                searchbtn.setVisible(true);
                 return;   
         }
         
@@ -245,6 +253,7 @@ public class RunSearchController implements Initializable {
                 else{
                     JOptionPane.showMessageDialog(null,"You have entered "+a+" neurons. Please click Search to proceed.");
                 }
+                searchbtn.setVisible(true);
             }
             else{
                 ID.setText("ID "+count+" --connecting--");
@@ -307,6 +316,7 @@ public class RunSearchController implements Initializable {
                 else{
                     JOptionPane.showMessageDialog(null,"You have entered "+a+" neurons. Please click Search to proceed.");
                 }
+                searchbtn.setVisible(true);
          
             //reset count 2
             count2=0;
