@@ -32,6 +32,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -171,20 +173,28 @@ public class RunSearchController implements Initializable {
             int amount=Integer.parseInt(noNeuron.getText().trim()); // for message output
             for(int i=1;i<=amount;i++){
              b=i;
-             c=rand.nextInt(amount+1);
+             c=rand.nextInt(amount); //maximum coonected neuron is noNeuron-1
              //set maximum value to 1000??? for d,f,g
              int d=rand.nextInt(1000);
              //space.addNode(b,c,d);
                
-               // e can't be equal to b && e can't be same as previous generated e //
-               // Use Arraylist.add()
-               
+             // e can't be equal to b && e can't be same as previous generated e //
+             ArrayList<Integer> list = new ArrayList<Integer>();
+             for (int i = 1; i <= amount; i++) {
+                list.add(new Integer(i));
+             }
+             // remove the ID of currentNeuron from the Arraylist (e.g. ID1 is not going to connect to itself)
+             list.remove(b);
+             
+             Collections.shuffle(list);
+                
                for(int j=1;j<=c;j++){
-                   //int e=rand.nextInt(); NEED CHANGE
+                   int e= list.get(i);
                    int f=rand.nextInt(1000);
                    int g=rand.nextInt(1000);
-                   //space.addSynapse(b,Arraylist.get(j),f,g);
+                   //space.addSynapse(b,e,f,g);
                }
+               list.clear();
                
             }
                 if(amount==1){
