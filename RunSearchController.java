@@ -175,7 +175,7 @@ public class RunSearchController implements Initializable {
              b=i;
              c=rand.nextInt(amount); //maximum coonected neuron is noNeuron-1
              //set maximum value to 1000??? for d,f,g
-             int d=rand.nextInt(1000);
+             int d=rand.nextInt(5)+1;
              //space.addNode(b,c,d);
                
              // e can't be equal to b && e can't be same as previous generated e //
@@ -190,8 +190,8 @@ public class RunSearchController implements Initializable {
                 
                for(int j=1;j<=c;j++){
                    int e= list.get(i);
-                   int f=rand.nextInt(1000);
-                   int g=rand.nextInt(1000);
+                   int f=rand.nextInt(20)+1;
+                   int g=rand.nextInt(20)+1;
                    //space.addSynapse(b,e,f,g);
                }
                list.clear();
