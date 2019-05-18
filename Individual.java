@@ -38,21 +38,25 @@ public class Individual {
         this.treemap = treemap;
         this.path.add(startID);
         nodeSet.add(startID);
-        for (int i = 1; i < length; i++) {
-            if (treemap.get(path.get(i - 1)).getRandomNext(nodeSet) == -1) {
-                this.path.clear();
-                nodeSet.clear();
-                path.add(startID);
-                nodeSet.add(startID);
-                i = 1;
+        checkGoal(endID);
+        if (!goal) {
+            for (int i = 1; i < length; i++) {
+                if (treemap.get(path.get(i - 1)).getRandomNext(nodeSet) == -1) {
+                    this.path.clear();
+                    nodeSet.clear();
+                    path.add(startID);
+                    nodeSet.add(startID);
+                    i = 1;
+                }
+                path.add(treemap.get(path.get(i - 1)).getRandomNext(nodeSet));
+                nodeSet.add(path.get(path.size() - 1));
+                checkGoal(endID);
+                if (goal) {
+                    break;
+                }
             }
-            path.add(treemap.get(path.get(i - 1)).getRandomNext(nodeSet));
-            nodeSet.add(path.get(path.size()-1));
         }
         checkGoal(endID);
-        // initialise time ( to prevent arithmetic error)
-        time = 100;
-
         calculateTime();
         calculateDistance();
         calculateFitness();
@@ -70,8 +74,6 @@ public class Individual {
         this.nodeSet = new HashSet<>();
         this.path.add(startID);
         this.nodeSet.add(startID);
-        // initialise time ( to prevent arithmetic error)
-        time = 100;
         calculateTime();
         calculateDistance();
         calculateFitness();
@@ -140,9 +142,10 @@ public class Individual {
      * junit.framework.TestCase;
      *
      * @param ID the end node of the search
+     * @return the condition of the path
      */
     public boolean checkGoal(int ID) {
-        if (path.get(path.size()-1) == ID) {
+        if (path.get(path.size() - 1) == ID) {
             goal = true;
         } else {
             goal = false;
@@ -167,10 +170,12 @@ public class Individual {
      */
     public void calculateTime() {
         if (path.size() > 1) {
-            time = 100;
+            time=0;
             for (int i = 1; i < path.size(); i++) {
                 time += this.treemap.get(path.get(i - 1)).getTimeTo(path.get(i));
             }
+        }else{
+            time = -1;
         }
     }
 
@@ -185,15 +190,17 @@ public class Individual {
             }
         }
     }
-    
+
     /**
      * calculate the individual fitness value
      */
-    public void calculateFitness(){
-        fitness = 1.0 / (getTime()*1.0);
+    public void calculateFitness() {
+        fitness = 1.0 / (getTime() * 1.0);
         if (getGoal()) {
             fitness = fitness * 1000;
-        } else {
+        } else if(fitness== -1){
+            
+        }else{
             fitness = fitness * -1000;
         }
     }
