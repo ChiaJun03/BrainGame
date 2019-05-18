@@ -45,11 +45,12 @@ public class GeneticAlgorithm {
      * Initialize population
      *
      * @param startID the startnode of the search
+     * @param endID the end node of the search
      * @return population The initial population generated
      */
-    public Population initPopulation(int startID) {
+    public Population initPopulation(int startID , int endID) {
         // Initialize population
-        Population population = new Population(this.treemap, this.populationSize, startID);
+        Population population = new Population(this.treemap, this.populationSize, startID , endID);
         return population;
     }
 
@@ -277,10 +278,10 @@ public class GeneticAlgorithm {
     public void search(int startID, int endID) {
 
         //Initialize population
-        Population population = initPopulation(startID);
+        Population population = initPopulation(startID,endID);
         evalPopulation(population, endID);
         int generation = 1;
-        int maxGenerations = 1000;
+        int maxGenerations = 200;
         while (isTerminationConditionMet(generation, maxGenerations) == false) {
             // Print fittest individual from population
 
@@ -302,4 +303,5 @@ public class GeneticAlgorithm {
         System.out.println("Stopped after " + maxGenerations + " generations.");
         System.out.println(bestIndividual);
     }
+
 }

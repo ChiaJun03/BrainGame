@@ -36,8 +36,9 @@ public class Population {
 	 *	@param treemap the treemap of ID and Neuron
 	 *	@param populationSize The size of the population
 	 *	@param startID the start node of the search
+         *      @param endID the end node of the search
 	 */
-	public Population(TreeMap<Integer , Neuron> treemap , int populationSize, int startID ) {
+	public Population(TreeMap<Integer , Neuron> treemap , int populationSize, int startID , int endID) {
 		// Initial population Array
 		this.population = new Individual[populationSize];
 		this.treemap = treemap;
@@ -45,7 +46,7 @@ public class Population {
 		// Loop over population size
 		for (int individualCount = 0; individualCount < populationSize; individualCount++) {
 			// Create individual
-			Individual individual = new Individual(treemap, startID);
+			Individual individual = new Individual(treemap, startID , endID , populationSize);
 			// Add individual to population Array
 			this.population[individualCount] = individual;
 		}
