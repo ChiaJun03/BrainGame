@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="braingame.TableController">
+  <tabs>
+    <Tab text="Neuron">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="neuronTab" editable="true" prefHeight="563.0" prefWidth="800.0" style="-fx-selection-bar: red;">
+                    <columns>
+                      <TableColumn fx:id="nodeID" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="numConnection" prefWidth="75.0" text="Number of Connection" />
+                        <TableColumn fx:id="lifetime" prefWidth="75.0" text="Lifetime" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Connection">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="synapseTab" editable="true" prefHeight="562.0" prefWidth="800.0" style="-fx-selection-bar: red;">
+                    <columns>
+                      <TableColumn fx:id="source" prefWidth="75.0" text="Source" />
+                      <TableColumn fx:id="destination" prefWidth="75.0" text="Destination" />
+                        <TableColumn fx:id="time" prefWidth="75.0" text="Time" />
+                        <TableColumn fx:id="distance" prefWidth="75.0" text="Distance" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
