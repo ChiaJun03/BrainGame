@@ -193,6 +193,14 @@ public class Neuron {
         }*/
         return -1;
     }
+    
+    public Synapse getSynapseTo(int ID){
+        for(int iterate = 0 ; iterate < synapseList.size() ; iterate++){
+            if(synapseList.get(iterate).getID() == ID)
+                return synapseList.get(iterate);
+        }
+        return null;
+    }
 
     
 }

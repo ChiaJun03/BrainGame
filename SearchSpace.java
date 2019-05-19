@@ -13,7 +13,7 @@ import java.util.TreeMap;
  * @author Jing Chong
  */
 public class SearchSpace {
-    private TreeMap<Integer, Neuron> space;
+    private static TreeMap<Integer, Neuron> space;
     
     
     /**A constructor that create a tree map with

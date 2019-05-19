@@ -9,6 +9,19 @@ package braingame;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
+import edu.uci.ics.jung.graph.DirectedSparseGraph;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,6 +33,7 @@ import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +47,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -85,6 +101,8 @@ public class RunSearchController implements Initializable {
     int b;
     int c;
     private TableController control;
+    private Graph<Integer , Synapse> graph;
+    private SearchSpace space;
 
     /**
      * Initializes the controller class.
@@ -93,6 +111,7 @@ public class RunSearchController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {   
+        space = new SearchSpace();
         //flashanime();
         bounceanime();
         // Initially 
@@ -106,6 +125,9 @@ public class RunSearchController implements Initializable {
         searchbtn.setVisible(false);
         //noNeuron != 0
         ID.setText("ID "+1);
+        
+        //generate Graph
+        graph = new DirectedSparseGraph<>();
     }
     
     /**To set the header of this pane according to the searching method selected in the menu pane
@@ -189,8 +211,11 @@ public class RunSearchController implements Initializable {
                 c=rand.nextInt(amount); //maximum coonected neuron is noNeuron-1
                 //set maximum value to 1000??? for d,f,g
                 int d=rand.nextInt(5)+1;
-                //space.addNode(b,c,d);
+                space.addNode(b,c,d);
                 control.addTableNode(b, c, d);
+                
+                //add vertex to the graph
+                graph.addVertex(b);
 
                 // e can't be equal to b && e can't be same as previous generated e
                 ArrayList<Integer> list = new ArrayList<Integer>();
@@ -206,8 +231,12 @@ public class RunSearchController implements Initializable {
                     int e= list.get(j-1);
                     int f=rand.nextInt(20)+1;
                     int g=rand.nextInt(20)+1;
-                    //space.addSynapse(b,e,f,g);
+                    space.addSynapse(b,e,f,g);
                     control.addTableSynapse(b, e, f, g);
+                    
+                    //add edge to graph
+                    graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
+                    
                 }
                 list.clear();
             }
@@ -237,8 +266,10 @@ public class RunSearchController implements Initializable {
             b=count;
             c= Integer.parseInt(ConnectedNeuron.getText().trim());
             int d= Integer.parseInt(Lifetime.getText().trim());
-            //space.addNode(b,c,d);
+            space.addNode(b,c,d);
             control.addTableNode(b, c, d);
+            //add node to the graph
+            graph.addVertex(b);
             
             if(c==0){
                 if(count<a){
@@ -280,8 +311,9 @@ public class RunSearchController implements Initializable {
         int e= Integer.parseInt(connectedID.getText().trim());
         int f= Integer.parseInt(time.getText().trim());
         int g= Integer.parseInt(distance.getText().trim());
-        //space.addSynapse(b,e,f,g);
+        space.addSynapse(b,e,f,g);
         control.addTableSynapse(b, e, f, g);
+        graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
         
         //after user input the last connection
         if(count2 == c){
@@ -334,12 +366,15 @@ public class RunSearchController implements Initializable {
         connectedID.clear();
         time.clear();
         distance.clear();
+        
 
         try{
             FXMLLoader loader= new FXMLLoader(getClass().getResource("SearchPane.fxml"));
+            GraphSetup gs = new GraphSetup();
             AnchorPane root= (AnchorPane) loader.load();
             pane.getChildren().removeAll();
             pane.getChildren().setAll(root);
+            pane.getChildren().add(gs.setup(graph));
             SearchPaneController control=loader.getController();
             control.setSearchMehod(header2.getText());
         }catch (IOException e){
@@ -439,6 +474,7 @@ public class RunSearchController implements Initializable {
                JOptionPane.showMessageDialog(null,"Please select a mode to proceed.", "Error", 0);
         }
     }
+    
 }
 
 
