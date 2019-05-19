@@ -83,6 +83,7 @@ public class GeneticAlgorithm {
         for (int iterate=0 ; iterate< individualArray.length ; iterate++) {
             //System.out.println(endID);
             individualArray[iterate].checkGoal(endID);
+            individualArray[iterate].calculateFitness();
             populationFitness += individualArray[iterate].getFitness();
         }
 
