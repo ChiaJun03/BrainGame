@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,8 +8,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="braingame.SearchPaneController">
+<AnchorPane id="AnchorPane" fx:id="searchPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="braingame.SearchPaneController">
     <stylesheets>
         <URL value="@searchpane.css" />
     </stylesheets>
+   <children>
+      <Button fx:id="deleteButton" layoutX="734.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#deleteNode" text="Delete" />
+   </children>
 </AnchorPane>

@@ -5,6 +5,7 @@
  */
 package braingame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
@@ -31,9 +32,9 @@ public class GeneticAlgorithm {
      * @param elitismCount
      * @param tournamentSize
      */
-    public GeneticAlgorithm(SearchSpace treeObject, int populationSize, double mutationRate, double crossoverRate, int elitismCount,
+    public GeneticAlgorithm(TreeMap<Integer,Neuron> treeObject, int populationSize, double mutationRate, double crossoverRate, int elitismCount,
             int tournamentSize) {
-        this.treemap = treeObject.getTreeMap();
+        this.treemap = treeObject;
         this.populationSize = populationSize;
         this.mutationRate = mutationRate;
         this.crossoverRate = crossoverRate;
@@ -276,13 +277,15 @@ public class GeneticAlgorithm {
         return newPopulation;
     }
 
-    public void search(int startID, int endID) {
+    public ArrayList<Integer> search(int startID, int endID) {
 
         //Initialize population
+        System.out.println("1");
         Population population = initPopulation(startID,endID);
+        System.out.println("2");
         evalPopulation(population, endID);
         int generation = 1;
-        int maxGenerations = 200;
+        int maxGenerations = 20;
         while (isTerminationConditionMet(generation, maxGenerations) == false) {
             // Print fittest individual from population
 
@@ -303,6 +306,9 @@ public class GeneticAlgorithm {
         Individual bestIndividual = population.getFittest(0);
         System.out.println("Stopped after " + maxGenerations + " generations.");
         System.out.println(bestIndividual);
+        
+        return bestIndividual.getPath();
+        
     }
 
 }

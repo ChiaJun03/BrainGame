@@ -100,4 +100,8 @@ public class BreadthFirstSearch {
         }
         return path;
     }
+    
+    public ArrayList<Integer> getPath(){
+        return goal;
+    }
 }

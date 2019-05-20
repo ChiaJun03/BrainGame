@@ -41,14 +41,21 @@ public class Individual {
         checkGoal(endID);
         if (!goal) {
             for (int i = 1; i < length; i++) {
-                if (treemap.get(path.get(i - 1)).getRandomNext(nodeSet) == -1) {
+                Neuron temp = treemap.get(path.get(i - 1));
+                System.out.println(temp);
+                if (!temp.checkHaveNext(nodeSet)) {
+                    if(i==1){
+                        break;
+                    }
+                    
                     this.path.clear();
                     nodeSet.clear();
                     path.add(startID);
                     nodeSet.add(startID);
                     i = 1;
+                    temp = treemap.get(path.get(i - 1));
                 }
-                path.add(treemap.get(path.get(i - 1)).getRandomNext(nodeSet));
+                path.add(temp.getRandomNext(nodeSet));
                 nodeSet.add(path.get(path.size() - 1));
                 checkGoal(endID);
                 if (goal) {
@@ -203,6 +210,10 @@ public class Individual {
         }else{
             fitness = fitness * -1000;
         }
+    }
+    
+    public boolean isIsolated(HashSet<Integer> set){
+        return true;
     }
 
 }

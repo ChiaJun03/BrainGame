@@ -171,6 +171,16 @@ public class Neuron {
         return synapseList.get(getIndexOf(toID)).getDistance();
     }
     
+    public boolean checkHaveNext(HashSet<Integer> set){
+        for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){
+            if(!(set.contains(synapseList.get(iterate).getID()))){
+                //cond = true;
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public int getRandomNext(HashSet<Integer> set){
         //boolean cond = false;
         for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){

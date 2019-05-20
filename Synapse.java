@@ -48,9 +48,15 @@ public class Synapse{
     
     /**Overwriting toString method
      * @return toID, time and distance of synapse
-     */
+     
     public String toString(){
         return "ID: "+toID+"\tTime: "+time+"\tDistance: "+distance+"\n";
+    }
+    */
+    
+    
+    public String toString(){
+        return "Time: "+time;
     }
     
 }

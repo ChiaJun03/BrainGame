@@ -23,6 +23,11 @@ public class SearchSpace {
         space = new TreeMap();
     }
     
+    public SearchSpace(int i){
+        
+    }
+    
+    
     /**Add a new node to the search space.
      * @param id is the id of the newly added node
      * @param connectNum is the number of connected node to the newly added node

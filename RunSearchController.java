@@ -229,8 +229,8 @@ public class RunSearchController implements Initializable {
                 //choose the first c number of ids in the list
                 for(int j=1;j<=c;j++){
                     int e= list.get(j-1);
-                    int f=rand.nextInt(20)+1;
-                    int g=rand.nextInt(20)+1;
+                    int f=rand.nextInt(10)+1;
+                    int g=rand.nextInt(10)+1;
                     space.addSynapse(b,e,f,g);
                     control.addTableSynapse(b, e, f, g);
                     
@@ -371,10 +371,10 @@ public class RunSearchController implements Initializable {
         try{
             FXMLLoader loader= new FXMLLoader(getClass().getResource("SearchPane.fxml"));
             GraphSetup gs = new GraphSetup();
+            gs.setGraph(graph);
             AnchorPane root= (AnchorPane) loader.load();
             pane.getChildren().removeAll();
             pane.getChildren().setAll(root);
-            pane.getChildren().add(gs.setup(graph));
             SearchPaneController control=loader.getController();
             control.setSearchMehod(header2.getText());
         }catch (IOException e){
