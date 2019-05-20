@@ -7,6 +7,7 @@ package braingame;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 /**
  *
@@ -182,26 +183,22 @@ public class Neuron {
     }
     
     public int getRandomNext(HashSet<Integer> set){
-        //boolean cond = false;
+        boolean cond = false;
+        ArrayList<Synapse> tempList = new ArrayList<>();
         for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){
             if(!(set.contains(synapseList.get(iterate).getID()))){
-                //cond = true;
-                return synapseList.get(iterate).getID();
+                cond = true;
+                tempList.add(synapseList.get(iterate));
             }
         }
-        /*if(cond){
+        if(cond){
             Random r = new Random();
-            int temp = r.nextInt(synapseList.size());
-            while(set.contains(synapseList.get(temp).getID())){
-                temp= r.nextInt(synapseList.size());
-                System.out.println("fjafs");
-            }
-            int nextNode=synapseList.get(temp).getID();
+            int temp = r.nextInt(tempList.size());
+            int nextNode = tempList.get(temp).getID();
             return nextNode;
         }else{
             return -1;
-        }*/
-        return -1;
+        }
     }
     
     public Synapse getSynapseTo(int ID){

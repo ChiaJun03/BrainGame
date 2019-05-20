@@ -39,6 +39,8 @@ public class Individual {
         this.path.add(startID);
         nodeSet.add(startID);
         checkGoal(endID);
+        int counter=0;
+        int lastRemovedNode = 0;
         if (!goal) {
             for (int i = 1; i < length; i++) {
                 Neuron temp = treemap.get(path.get(i - 1));
@@ -46,6 +48,15 @@ public class Individual {
                 if (!temp.checkHaveNext(nodeSet)) {
                     if(i==1){
                         break;
+                    }
+                    if(counter > 10){
+                        break;
+                    }
+                    if(counter == 0){
+                        lastRemovedNode = path.get(path.size()-1);
+                    }
+                    if(lastRemovedNode == path.get(path.size()-1)){
+                        counter++;
                     }
                     
                     this.path.clear();
@@ -212,8 +223,5 @@ public class Individual {
         }
     }
     
-    public boolean isIsolated(HashSet<Integer> set){
-        return true;
-    }
 
 }

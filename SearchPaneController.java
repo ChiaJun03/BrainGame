@@ -54,13 +54,8 @@ public class SearchPaneController implements Initializable {
 
     @FXML
     private void deleteNode(MouseEvent event) {
-        //GeneticAlgorithm GA = new GeneticAlgorithm(treeMap , 10 , 0.1 , 0.8 ,2 , 6);
-        //displayPath(GA.search(1, 2));
-        BreadthFirstSearch BFS = new BreadthFirstSearch(new SearchSpace(1));
-        BFS.search(1, 2);
-        System.out.println("Start Here");
-        System.out.println(BFS.getPath());
-        displayPath(BFS.getPath());
+        GeneticAlgorithm GA = new GeneticAlgorithm(space.getTreeMap() , 10 , 0.1 , 0.8 ,2 , 6);
+        displayPath(GA.search(1, 2));
     }
     
     // need to figure out a way to delay the changes of scene
