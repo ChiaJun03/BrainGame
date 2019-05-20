@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 /**
  *
- * @author Jing Chong
+ * @author Jasmoon
  */
 public class SearchSpace {
     private static TreeMap<Integer, Neuron> space;
@@ -74,6 +74,7 @@ public class SearchSpace {
     /**Overwriting toString method
      * @return id and all others info of neuron
      */
+    @Override
     public String toString(){
         String info = "Search Space\n";
         for(Map.Entry<Integer, Neuron> entry: space.entrySet())

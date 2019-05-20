@@ -5,6 +5,9 @@
  */
 package braingame;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -14,8 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -32,9 +37,15 @@ public class SearchPaneController implements Initializable {
     private SwingNode defaultGraphPane;
     private SwingNode changedGraphPane;
     @FXML
-    private Button deleteButton;
-    @FXML
     private AnchorPane searchPane;
+    @FXML
+    private JFXTextField startnode;
+    @FXML
+    private JFXTextField endnode;
+    @FXML
+    private ImageView backbtn;
+    @FXML
+    private JFXButton searchpath;
 
     /**
      * Initializes the controller class.
@@ -52,7 +63,6 @@ public class SearchPaneController implements Initializable {
         this.searchMethod = searchMethod;
     }
 
-    @FXML
     private void deleteNode(MouseEvent event) {
         GeneticAlgorithm GA = new GeneticAlgorithm(space.getTreeMap() , 10 , 0.1 , 0.8 ,2 , 6);
         displayPath(GA.search(1, 2));
@@ -79,6 +89,23 @@ public class SearchPaneController implements Initializable {
             searchPane.getChildren().remove(changedGraphPane);
             changedGraphPane = graphObject.changePath(nodeList, edgeList);
             searchPane.getChildren().add(changedGraphPane);
+    }
+
+    @FXML
+    private void back_program(MouseEvent event) throws IOException {
+        AnchorPane root=FXMLLoader.load(getClass().getResource("RunSearch.fxml "));       
+        searchPane.getChildren().removeAll();
+        searchPane.getChildren().setAll(root);
+    }
+
+    @FXML
+    private void close_program(MouseEvent event) {
+         System.exit(0);
+    }
+
+    @FXML
+    private void searchpath(MouseEvent event) {
+        
     }
 }
 

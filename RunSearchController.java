@@ -103,6 +103,8 @@ public class RunSearchController implements Initializable {
     private TableController control;
     private Graph<Integer , Synapse> graph;
     private SearchSpace space;
+    @FXML
+    private JFXButton tablebtn;
 
     /**
      * Initializes the controller class.
@@ -203,7 +205,6 @@ public class RunSearchController implements Initializable {
         
         //for auto case
         if(autoMode.isSelected()){
-            showTable();
             Random rand=new Random();
             int amount=Integer.parseInt(noNeuron.getText().trim());
             for(int i=1;i<=amount;i++){
@@ -252,8 +253,6 @@ public class RunSearchController implements Initializable {
         else{
             //counter for neuron id
             count++;
-            if(count==1)
-                showTable();
             a = Integer.parseInt(noNeuron.getText().trim());
             
             inputlbl.setVisible(true);
@@ -384,6 +383,7 @@ public class RunSearchController implements Initializable {
     
     /**Show the search space in the form of table in a new window
      */
+    @FXML
     public void showTable(){
         Stage tableStage = new Stage();
         try {

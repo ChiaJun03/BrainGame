@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
@@ -13,6 +15,18 @@
         <URL value="@searchpane.css" />
     </stylesheets>
    <children>
-      <Button fx:id="deleteButton" layoutX="734.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#deleteNode" text="Delete" />
+      <Pane layoutX="389.0" prefHeight="600.0" prefWidth="200.0" styleClass="sidebar" stylesheets="@mycss.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXTextField fx:id="startnode" labelFloat="true" layoutX="16.0" layoutY="108.0" promptText="Start Node" unFocusColor="WHITE" />
+            <JFXTextField fx:id="endnode" labelFloat="true" layoutX="16.0" layoutY="167.0" promptText="End Node" unFocusColor="WHITE" />
+            <ImageView fx:id="backbtn" fitHeight="31.0" fitWidth="34.0" layoutX="4.0" onMouseClicked="#back_program" pickOnBounds="true" preserveRatio="true" styleClass="backbtn" />
+            <ImageView fx:id="backbtn" fitHeight="31.0" fitWidth="34.0" layoutX="169.0" onMouseClicked="#close_program" pickOnBounds="true" preserveRatio="true" styleClass="closebtn" />
+            <JFXButton fx:id="searchpath" buttonType="RAISED" layoutX="24.0" layoutY="235.0" onMouseClicked="#searchpath" prefHeight="43.0" prefWidth="153.0" ripplerFill="WHITE" styleClass="searchbtn" text="Search Path">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
