@@ -111,10 +111,10 @@ public class GraphSetup {
             public Paint transform(Synapse s){
                 for(int iterate = 0 ; iterate < edgeList.size() ; iterate++){
                     if(edgeList.get(iterate).equals(s)){
-                        return Color.cyan;
+                        return Color.RED;
                     }
                 }
-                return new Color(1f,0f,0f,0f );
+                return Color.BLACK;
             }
         };
         
@@ -130,7 +130,7 @@ public class GraphSetup {
         
         vv.getRenderContext().setVertexFillPaintTransformer(vertexColor);
         vv.getRenderContext().setVertexShapeTransformer(vertexSize);
-        vv.getRenderContext().setEdgeFillPaintTransformer(edgeColor);
+        vv.getRenderContext().setEdgeDrawPaintTransformer(edgeColor);
         vv.getRenderContext().setEdgeArrowStrokeTransformer(edgeStroke);
         
         SwingNode swingNode = new SwingNode();

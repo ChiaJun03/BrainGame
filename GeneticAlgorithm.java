@@ -130,6 +130,7 @@ public class GeneticAlgorithm {
             Individual parent1 = population.getFittest(populationIndex);
             parent1.checkGoal(endID);
             //if the individual does not reach goal get random next
+            /*
             if (!parent1.getGoal()) {
                 //no more path regenerate path
                 if (treemap.get(parent1.getPath().get(parent1.getPath().size()-1)).getRandomNext(parent1.getHashSet()) == -1) {
@@ -146,7 +147,7 @@ public class GeneticAlgorithm {
                 parent1.calculateDistance();
                 parent1.calculateFitness();
             }
-            
+            */
             // Apply crossover to this individual?
             if (this.crossoverRate > Math.random() && populationIndex >= this.elitismCount) {
                 // Find parent2 with tournament selection
