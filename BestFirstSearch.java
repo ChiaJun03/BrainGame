@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package braingame;
+package braingamegui;
 
 import java.util.ArrayList;
 
@@ -61,6 +61,7 @@ public class BestFirstSearch {
                         for(int j = goal.size()-1  ; j > 0 ; j--){
                             currentTime += space.get (goal.get(j-1)).getTimeTo (goal.get(j));
                         }
+                        space.deductLifeTimes(goal);   // deduct lifetime of node in the list
                         System.out.println("Get goal ! "+end);
                     }
                     open.clear();
@@ -117,6 +118,10 @@ public class BestFirstSearch {
                 path+=ptr+" -> ";
             path+=" goal!\nTime used: "+currentTime+"s\n";
         }
+        open.clear();
+        close.clear();
+        goal.clear();
+        currentTime = 0;
         return path;
     }
 }

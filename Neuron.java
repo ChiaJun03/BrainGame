@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package braingame;
+package braingamegui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 
 /**
  *
@@ -42,7 +41,12 @@ public class Neuron {
     public void setLifetime(Integer lifetime ) {
         this.lifetime = lifetime ;
     }
-
+    
+    ////Deduct lifetime by one 
+    public void deductLifeTime(){
+        this.lifetime = lifetime -1 ;
+    }
+    
     /**
      * @return number of connected neurons to neuron
      */
@@ -172,41 +176,27 @@ public class Neuron {
         return synapseList.get(getIndexOf(toID)).getDistance();
     }
     
-    public boolean checkHaveNext(HashSet<Integer> set){
+    public int getRandomNext(HashSet<Integer> set){
+        //boolean cond = false;
         for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){
             if(!(set.contains(synapseList.get(iterate).getID()))){
                 //cond = true;
-                return true;
+                return synapseList.get(iterate).getID();
             }
         }
-        return false;
-    }
-    
-    public int getRandomNext(HashSet<Integer> set){
-        boolean cond = false;
-        ArrayList<Synapse> tempList = new ArrayList<>();
-        for(int iterate = 0 ; iterate < synapseList.size() ; iterate ++){
-            if(!(set.contains(synapseList.get(iterate).getID()))){
-                cond = true;
-                tempList.add(synapseList.get(iterate));
-            }
-        }
-        if(cond){
+        /*if(cond){
             Random r = new Random();
-            int temp = r.nextInt(tempList.size());
-            int nextNode = tempList.get(temp).getID();
+            int temp = r.nextInt(synapseList.size());
+            while(set.contains(synapseList.get(temp).getID())){
+                temp= r.nextInt(synapseList.size());
+                System.out.println("fjafs");
+            }
+            int nextNode=synapseList.get(temp).getID();
             return nextNode;
         }else{
             return -1;
-        }
-    }
-    
-    public Synapse getSynapseTo(int ID){
-        for(int iterate = 0 ; iterate < synapseList.size() ; iterate++){
-            if(synapseList.get(iterate).getID() == ID)
-                return synapseList.get(iterate);
-        }
-        return null;
+        }*/
+        return -1;
     }
 
     

@@ -1,9 +1,9 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this goallate file, choose Tools | goallates
- * and open the goallate in the editor.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package braingame;
+package braingamegui;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -59,13 +59,15 @@ public class BreadthFirstSearch {
                 }
                 if (goal.get(0) != start){
                     goal.clear();
-                }else{
+                }else{   
                     for(int j = goal.size()-1  ; j > 0 ; j--){
                         currentTime += space.get (goal.get(j-1)).getTimeTo (goal.get(j));
                     }
+                    space.deductLifeTimes(goal);   // deduct lifetime of node in the list 
                     System.out.println("Get goal ! "+end);
                 }
                 open.clear();
+                close.clear();
             }else{
                 while (space.hasNext(front.getId(), connection)) {
                     int next = space.nextNode(front.getId(), connection);
@@ -83,9 +85,11 @@ public class BreadthFirstSearch {
     }
     
     public boolean nodeClosed(int id){
-        for(Node ptr: close)
+        /*for(Node ptr: close)
             if(ptr.getId() == id)
-                return true;
+                return true;*/
+        if(close.contains(id))
+            return true;
         return false;
     }
     
@@ -97,11 +101,9 @@ public class BreadthFirstSearch {
             for(Integer ptr: goal)
                 path+=ptr+" -> ";
             path+=" goal!\nTime used: "+currentTime+"s\n";
+            goal.clear();
+            currentTime = 0;
         }
         return path;
-    }
-    
-    public ArrayList<Integer> getPath(){
-        return goal;
     }
 }
