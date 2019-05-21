@@ -13,9 +13,10 @@ import java.util.TreeMap;
  *
  * @author Yuan Qing
  */
-public class GeneticAlgorithm {
+public class GeneticAlgorithm implements Search{
 
     private TreeMap<Integer, Neuron> treemap;
+    private Individual bestIndividual;
     private int populationSize;
     private double mutationRate;
     private double crossoverRate;
@@ -278,8 +279,8 @@ public class GeneticAlgorithm {
         return newPopulation;
     }
 
-    public ArrayList<Integer> search(int startID, int endID) {
-
+    
+    public void search(int startID, int endID) {
         //Initialize population
         System.out.println("1");
         Population population = initPopulation(startID,endID);
@@ -304,12 +305,32 @@ public class GeneticAlgorithm {
             generation++;
         }
 
-        Individual bestIndividual = population.getFittest(0);
+        bestIndividual = population.getFittest(0);
         System.out.println("Stopped after " + maxGenerations + " generations.");
         System.out.println(bestIndividual);
         
-        return bestIndividual.getPath();
-        
     }
+    
+    public ArrayList<Integer> getPath(){
+        return bestIndividual.getPath();
+    }
+    
+    public void reset(){
+        bestIndividual=null;
+        treemap.clear();
+    }
+    
+    public String toString(){
+        String path ="";
+        if(bestIndividual.getGoal()){
+            for(Integer ptr: bestIndividual.getPath())
+                path+=ptr+" - ";
+            path+=" goal!\nTime used: "+bestIndividual.getTime()+"s\n"+"Distance used: "+bestIndividual.getDistance()+"\n";
+        }else{
+            path+="No path available";
+        }
+        return path;
+    }
+        
 
 }

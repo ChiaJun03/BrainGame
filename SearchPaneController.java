@@ -151,7 +151,12 @@ public class SearchPaneController implements Initializable {
                 search = new BestFirstSearch(space);
             }
             else if(genetic.isSelected()){
-                //control.setHeader("Genetic Search",85.0);
+                int populationSize = 20; // range between 10 to 100
+                double mutationRate = 0.1; // range below 10%
+                double crossoverRate = 0.8; // range higher than 70&
+                int elitismCount = 5; // range 10% of the populationSize
+                int tournamentSize = 10; // range 70% of the populationSize
+                search = new GeneticAlgorithm(space.getTreeMap(),populationSize,mutationRate,crossoverRate, elitismCount,tournamentSize);
             }
             else if(basic.isSelected()){
                 search = new BasicSearch(space);
