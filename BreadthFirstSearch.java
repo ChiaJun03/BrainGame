@@ -6,13 +6,12 @@
 package braingame;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  *
  * @author Chia Jun
  */
-public class BreadthFirstSearch {
+public class BreadthFirstSearch implements Search {
     private SearchSpace space;
     private int currentTime;
     private Node front;
@@ -28,8 +27,12 @@ public class BreadthFirstSearch {
     }
     
     public void search(int start, int end){
+        reset();
         System.out.println("Search path from node "+start+" to node "+end+":");
-        breadthFirstSearch(start, end, 0);
+        if(space.contains(start)&&space.contains(end))
+            breadthFirstSearch(start, end, 0);
+        else
+            System.out.println("No path available");
     }
 
     public void breadthFirstSearch(int start, int end, int connection) {
@@ -82,11 +85,15 @@ public class BreadthFirstSearch {
         }
     }
     
+    public void reset(){
+        open.clear();
+        close.clear();
+        goal.clear();
+        currentTime = 0;
+    }
+    
     public boolean nodeClosed(int id){
-        for(Node ptr: close)
-            if(ptr.getId() == id)
-                return true;
-        return false;
+        return close.contains(id);
     }
     
     public String toString(){
@@ -95,7 +102,7 @@ public class BreadthFirstSearch {
             path+="No path available";
         else{
             for(Integer ptr: goal)
-                path+=ptr+" -> ";
+                path+=ptr+" - ";
             path+=" goal!\nTime used: "+currentTime+"s\n";
         }
         return path;

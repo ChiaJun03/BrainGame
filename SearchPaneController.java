@@ -6,6 +6,7 @@
 package braingame;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -36,6 +38,8 @@ public class SearchPaneController implements Initializable {
     private String searchMethod;
     private SwingNode defaultGraphPane;
     private SwingNode changedGraphPane;
+    private Search search;
+    
     @FXML
     private AnchorPane searchPane;
     @FXML
@@ -46,6 +50,20 @@ public class SearchPaneController implements Initializable {
     private ImageView backbtn;
     @FXML
     private JFXButton searchpath;
+    @FXML
+    private JFXButton tablebtn;
+    @FXML
+    private JFXCheckBox basic;
+    @FXML
+    private JFXCheckBox bfs;
+    @FXML
+    private JFXCheckBox dfs;
+    @FXML
+    private JFXCheckBox astar;
+    @FXML
+    private JFXCheckBox prune;
+    @FXML
+    private JFXCheckBox genetic;
 
     /**
      * Initializes the controller class.
@@ -63,25 +81,23 @@ public class SearchPaneController implements Initializable {
         this.searchMethod = searchMethod;
     }
 
-    private void deleteNode(MouseEvent event) {
-        GeneticAlgorithm GA = new GeneticAlgorithm(space.getTreeMap() , 10 , 0.1 , 0.8 ,2 , 6);
-        displayPath(GA.search(1, 2));
-    }
     
     // need to figure out a way to delay the changes of scene
     public void displayPath(ArrayList<Integer> path){
         ArrayList<Integer> nodeList = new ArrayList<>();
         ArrayList<Synapse> edgeList = new ArrayList<>();
-         for (int iterate1 = 0; iterate1 < path.size(); iterate1++) {
+        for (int iterate1 = 0; iterate1 < path.size(); iterate1++) {
             nodeList.add(path.get(iterate1));
             System.out.println("Path list : " + path.get(iterate1));
             if (iterate1 > 0) {
+                System.out.println(path.get(iterate1 - 1));
                 Neuron temp = space.getTreeMap().get(path.get(iterate1 - 1));
+                System.out.println(space);
                 System.out.println(temp);
                 edgeList.add(temp.getSynapseTo(path.get(iterate1)));
             }
             showPath(nodeList,edgeList);
-         }
+        }
     }
     
     public void showPath(ArrayList<Integer> nodeList , ArrayList<Synapse> edgeList) {
@@ -105,8 +121,82 @@ public class SearchPaneController implements Initializable {
 
     @FXML
     private void searchpath(MouseEvent event) {
+        int start = Integer.parseInt(startnode.getText());
+        int end = Integer.parseInt(endnode.getText());
+        if(search!=null && search.getPath()!=null)
+            space.deductLifeTimes(search.getPath());
         
+        if(searchMethod.equalsIgnoreCase("basic search"))
+            search = new BasicSearch(space);
+        else if(searchMethod.equalsIgnoreCase("breadth first search"))
+            search = new BreadthFirstSearch(space);
+        else if(searchMethod.equalsIgnoreCase("depth first search"))
+            search = new DepthFirstSearch(space);
+        else if(searchMethod.equalsIgnoreCase("prune search"))
+            search = new PruneSearch(space);
+        else if(searchMethod.equalsIgnoreCase("best first search"))
+            search = new BestFirstSearch(space);
+        else
+            search = new BasicSearch(space);
+        
+        search.search(start, end);
+        
+        if(search.getPath()==null){
+            displayPath(new ArrayList<Integer>());
+            JOptionPane.showMessageDialog(null,"No Path Available.");
+        }
+        else{
+            displayPath(search.getPath());
+            JOptionPane.showMessageDialog(null, search);
+        }
+    }
+
+    @FXML
+    private void showTable(MouseEvent event) {
+    }
+    
+    @FXML
+    /**Change the pane of window according to the check box checked by user
+     */
+    public void run_search() throws IOException {
+        
+        if(isOnlyOneSelected()){
+                if(bfs.isSelected()){
+                    search = new BreadthFirstSearch(space);
+                }
+                else if(dfs.isSelected()){
+                    search = new DepthFirstSearch(space);
+                }
+                else if(astar.isSelected()){
+                    search = new BestFirstSearch(space);
+                }
+                else if(genetic.isSelected()){
+                    //control.setHeader("Genetic Search",85.0);
+                }
+                else if(basic.isSelected()){
+                    search = new BasicSearch(space);
+                }
+                else{
+                    search = new PruneSearch(space);
+                }
+        }
+        else{
+            if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())
+                JOptionPane.showMessageDialog(null,"Please select a search method to proceed.", "Error", 0);
+            else
+                JOptionPane.showMessageDialog(null,"Please select only one search method at a time.");
+        }
+    }
+    
+    /**Check whether only one check box is selected
+     * @return true if only one is checked else false
+     */
+    public boolean isOnlyOneSelected(){
+        return (bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&prune.isSelected());
     }
 }
-
-

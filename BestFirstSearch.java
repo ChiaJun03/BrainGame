@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Jing Chong
  */
-public class BestFirstSearch {
+public class BestFirstSearch implements Search{
     private SearchSpace space;
     private int currentTime;
     private Node front;
@@ -27,8 +27,12 @@ public class BestFirstSearch {
     }
     
     public void search(int start, int end){
+        reset();
         System.out.println("Search path from node "+start+" to node "+end+":");
-        bestFirstSearch(start, end, 0);
+        if(space.contains(start)&&space.contains(end))
+            bestFirstSearch(start, end, 0);
+        else
+            System.out.println("No path available");
     }
     
     public void bestFirstSearch(int start, int end, int connection){
@@ -88,6 +92,13 @@ public class BestFirstSearch {
         return false;
     }
     
+    public void reset(){
+        open.clear();
+        close.clear();
+        goal.clear();
+        currentTime = 0;
+    }
+    
     public void addPriority(int parent, int nextNode, int heuristic){
         if(open.size()==0)
             open.add(new Node(parent, nextNode, heuristic));
@@ -114,9 +125,14 @@ public class BestFirstSearch {
             path+="No path available";
         else{
             for(Integer ptr: goal)
-                path+=ptr+" -> ";
+                path+=ptr+" - ";
             path+=" goal!\nTime used: "+currentTime+"s\n";
         }
         return path;
+    }
+
+    @Override
+    public ArrayList<Integer> getPath() {
+        return goal;
     }
 }

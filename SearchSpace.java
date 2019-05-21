@@ -5,12 +5,13 @@
  */
 package braingame;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
  *
- * @author Jasmoon
+ * @author Jing Chong
  */
 public class SearchSpace {
     private static TreeMap<Integer, Neuron> space;
@@ -26,7 +27,6 @@ public class SearchSpace {
     public SearchSpace(int i){
         
     }
-    
     
     /**Add a new node to the search space.
      * @param id is the id of the newly added node
@@ -71,10 +71,30 @@ public class SearchSpace {
         return space.size();
     }
     
+     /**
+     * Deduct lifetime of all node in the path
+     *
+     * @param path is the path which lifetime of its node to be deducted.
+     */
+    public void deductLifeTimes(ArrayList<Integer> path) {
+        for (int i = 0; i < path.size(); i++) {
+            int id = path.get(i);
+            space.get(id).deductLifeTime();
+            if (space.get(id).getLifetime() == 0) {
+                space.remove(id);
+                GraphSetup.deleteNeuron(id);
+                for (Map.Entry<Integer, Neuron> entry : space.entrySet()) {
+                    if (entry.getValue().containsSynapse(id)) {
+                        entry.getValue().removeSynapse(id);
+                    }
+                }
+            }
+        }
+    }
+    
     /**Overwriting toString method
      * @return id and all others info of neuron
      */
-    @Override
     public String toString(){
         String info = "Search Space\n";
         for(Map.Entry<Integer, Neuron> entry: space.entrySet())
@@ -110,5 +130,9 @@ public class SearchSpace {
     
     public TreeMap<Integer, Neuron> getTreeMap(){
         return this.space;
+    }
+    
+    public boolean contains(int id){
+        return space.containsKey(id);
     }
 }

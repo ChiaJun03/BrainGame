@@ -55,7 +55,6 @@ public class Synapse{
     */
     
     
-    @Override
     public String toString(){
         return "Time: "+time;
     }

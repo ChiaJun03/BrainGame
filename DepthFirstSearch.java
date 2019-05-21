@@ -11,64 +11,64 @@ import java.util.ArrayList;
  *
  * @author Jing Chong
  */
-public class DepthFirstSearch {
+public class DepthFirstSearch implements Search{
     private SearchSpace space;
-    private boolean ended;
-    private int loopCount, currentTime, cycle;
+    private int currentTime, currentDistance;
     private ArrayList<Integer> goal;
-    private ArrayList<Integer> visitedNode;
     
     public DepthFirstSearch(SearchSpace space){
         this.space = space;
-        ended = false;
-        loopCount = 0;
         currentTime = 0;
-        cycle = 0;
+        currentDistance = 0;
         goal = new ArrayList();
-        visitedNode = new ArrayList();
     }
     
     public void search(int start, int end){
+        reset();
         System.out.println("Search path from node "+start+" to node "+end+":");
-        depthSearch(start, end, 0);
+        if(space.contains(start)&&space.contains(end))
+            depthSearch(start, end, 0);
+        else
+            System.out.println("No path available");
     }
     
     public void depthSearch(int start, int end, int connection){
-        while(!ended){
-            while(space.hasNext(start, connection)){
-                if(start==end){
-                    currentTime+=space.get(goal.get(goal.size()-1)).getTimeTo(start);
-                    goal.add(start); System.out.println("Push "+start+" into stack");
-                    System.out.println("Goal!");
-                    ended = true;
-                    break;
-                }else{
-                    if(!goal.isEmpty())
-                            currentTime+=space.get(goal.get(goal.size()-1)).getTimeTo(start);
-                    goal.add(start); System.out.println("Push "+start+" into stack");
-                    visitedNode.add(start);
-                    if(visitedNode.contains(space.nextNode(start, connection))){
-                        connection = space.nextNode(start, connection);
-                        goal.remove(goal.size()-1); System.out.println("Pop "+start+" from stack");
-                        if(!goal.isEmpty())
-                                currentTime-=space.get(goal.get(goal.size()-1)).getTimeTo(start);
-                    }else{
-                        start = space.nextNode(start, connection);
-                        connection=0;
-                    }
-                }
-            }
-            if(ended)
+        int root = start;
+        while(start!=root || space.hasNext(start, connection)){
+            if(start == end){
+                currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
+                currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
+                goal.add(start); System.out.println("Add "+start+" into path.");
                 break;
-            connection = goal.remove(goal.size()-1); System.out.println("Pop "+start+" from stack");
-            if(!goal.isEmpty())
-                    currentTime-=space.get(goal.get(goal.size()-1)).getTimeTo(connection);
-            start = goal.remove(goal.size()-1); System.out.println("Pop "+start+" from stack");
-            if(!goal.isEmpty())
-                    currentTime-=space.get(goal.get(goal.size()-1)).getTimeTo(start);
-        } 
+            }else if(!space.hasNext(start, connection)){
+                connection = start;
+                start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
+                if(!goal.isEmpty()){
+                    currentTime -= space.get(goal.get(goal.size()-1)).getTimeTo(start);
+                    currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
+                }
+            }else if(goal.contains(start)){
+                connection = start;
+                start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
+                currentTime -= space.get(goal.get(goal.size()-1)).getTimeTo(start);
+                currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
+            }else{
+                if(!goal.isEmpty()){
+                    currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
+                    currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
+                }
+                goal.add(start); System.out.println("Add "+start+" into path.");
+                start = space.nextNode(start, connection);
+                connection = 0;
+            }
+        }
     }
     
+    public void reset(){
+        goal.clear();
+        currentTime = 0;
+        currentDistance = 0;
+    }
     
     public String toString(){
         String path = "";
@@ -76,9 +76,14 @@ public class DepthFirstSearch {
             path+="No path available";
         else{
             for(Integer ptr: goal)
-                path+=ptr+" -> ";
-            path+=" goal!\nTime used: "+currentTime+"s\n";
+                path+=ptr+" - ";
+            path+=" goal!\nTime used: "+currentTime+"s\nDistance travelled: "+currentDistance+"\n";
         }
         return path;
+    }
+
+    
+    public ArrayList<Integer> getPath() {
+        return goal;
     }
 }

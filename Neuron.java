@@ -208,6 +208,11 @@ public class Neuron {
         }
         return null;
     }
+    
+    ////Deduct lifetime by one 
+    public void deductLifeTime(){
+        this.lifetime = lifetime -1 ;
+    }
 
     
 }

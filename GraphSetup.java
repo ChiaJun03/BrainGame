@@ -100,8 +100,8 @@ public class GraphSetup {
         return swingNode;
     }
 
-    public void deleteNeuron(int ID) {
-        this.graph.removeVertex(ID);
+    public static void deleteNeuron(int ID) {
+        graph.removeVertex(ID);
     }
 
     public SwingNode changePath(ArrayList<Integer> nodeList, ArrayList<Synapse> edgeList) {
@@ -151,26 +151,37 @@ public class GraphSetup {
             }
         };
 
-        //change edge stroke somehow cannot change thickness
+        //change edge thicknesss
         Transformer<Synapse, Stroke> edgeStroke = new Transformer<Synapse, Stroke>() {
-            float dash[] = {10.0f};
-            float dash2[] = {20.0f};
-
             @Override
             public Stroke transform(Synapse s) {
                 for (int iterate = 0; iterate < edgeList.size(); iterate++) {
                     if (edgeList.get(iterate).equals(s)) {
-                        return new BasicStroke(1000f);
+                        return new BasicStroke(5f);
                     }
                 }
-                return new BasicStroke(1000f);
+                return new BasicStroke(1f);
+            }
+        };
+        
+        //change arrow thkcness
+        Transformer<Synapse,Stroke> edgeArrowStroke = new Transformer<Synapse,Stroke>(){
+            @Override
+            public Stroke transform(Synapse s){
+                for (int iterate = 0; iterate < edgeList.size(); iterate++) {
+                    if (edgeList.get(iterate).equals(s)) {
+                        return new BasicStroke(3f);
+                    }
+                }
+                return new BasicStroke(1f);
             }
         };
 
         vv.getRenderContext().setVertexFillPaintTransformer(vertexColor);
         vv.getRenderContext().setVertexShapeTransformer(vertexSize);
         vv.getRenderContext().setEdgeDrawPaintTransformer(edgeColor);
-        //vv.getRenderContext().setEdgeArrowStrokeTransformer(edgeStroke);
+        vv.getRenderContext().setEdgeArrowStrokeTransformer(edgeArrowStroke);
+        vv.getRenderContext().setEdgeStrokeTransformer(edgeStroke);
         
         SwingNode swingNode = new SwingNode();
         SwingUtilities.invokeLater(new Runnable() {
@@ -185,5 +196,3 @@ public class GraphSetup {
 
     }
 }
-
-
