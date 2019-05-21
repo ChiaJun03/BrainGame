@@ -77,8 +77,21 @@ public class SearchPaneController implements Initializable {
         searchPane.getChildren().add(defaultGraphPane);
     }
 
-    public void setSearchMehod(String searchMethod) {
+    public void setSearchMethod(String searchMethod) {
         this.searchMethod = searchMethod;
+        
+        if(searchMethod.equalsIgnoreCase("basic search"))
+            basic.setSelected(true);
+        else if(searchMethod.equalsIgnoreCase("breadth first search"))
+            bfs.setSelected(true);
+        else if(searchMethod.equalsIgnoreCase("depth first search"))
+            dfs.setSelected(true);
+        else if(searchMethod.equalsIgnoreCase("prune search"))
+            prune.setSelected(true);
+        else if(searchMethod.equalsIgnoreCase("best first search"))
+            astar.setSelected(true);
+        else
+            genetic.setSelected(true);
     }
 
     
@@ -121,33 +134,49 @@ public class SearchPaneController implements Initializable {
 
     @FXML
     private void searchpath(MouseEvent event) {
-        int start = Integer.parseInt(startnode.getText());
-        int end = Integer.parseInt(endnode.getText());
-        if(search!=null && search.getPath()!=null)
-            space.deductLifeTimes(search.getPath());
         
-        if(searchMethod.equalsIgnoreCase("basic search"))
-            search = new BasicSearch(space);
-        else if(searchMethod.equalsIgnoreCase("breadth first search"))
-            search = new BreadthFirstSearch(space);
-        else if(searchMethod.equalsIgnoreCase("depth first search"))
-            search = new DepthFirstSearch(space);
-        else if(searchMethod.equalsIgnoreCase("prune search"))
-            search = new PruneSearch(space);
-        else if(searchMethod.equalsIgnoreCase("best first search"))
-            search = new BestFirstSearch(space);
-        else
-            search = new BasicSearch(space);
+        if(isOnlyOneSelected()){
+            int start = Integer.parseInt(startnode.getText());
+            int end = Integer.parseInt(endnode.getText());
+            if(search!=null && search.getPath()!=null)
+                space.deductLifeTimes(search.getPath());
         
-        search.search(start, end);
+            if(bfs.isSelected()){
+                search = new BreadthFirstSearch(space);
+            }
+            else if(dfs.isSelected()){
+                search = new DepthFirstSearch(space);
+            }
+            else if(astar.isSelected()){
+                search = new BestFirstSearch(space);
+            }
+            else if(genetic.isSelected()){
+                //control.setHeader("Genetic Search",85.0);
+            }
+            else if(basic.isSelected()){
+                search = new BasicSearch(space);
+            }
+            else{
+                search = new PruneSearch(space);
+            }
+            
+            search.search(start, end);
         
-        if(search.getPath()==null){
-            displayPath(new ArrayList<Integer>());
-            JOptionPane.showMessageDialog(null,"No Path Available.");
+            if(search.getPath()==null){
+                displayPath(new ArrayList<Integer>());
+                JOptionPane.showMessageDialog(null,"No Path Available.");
+            }
+            else{
+                displayPath(search.getPath());
+                JOptionPane.showMessageDialog(null, search);
+            }
+        
         }
         else{
-            displayPath(search.getPath());
-            JOptionPane.showMessageDialog(null, search);
+            if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())
+                JOptionPane.showMessageDialog(null,"Please select a search method to proceed.", "Error", 0);
+            else
+                JOptionPane.showMessageDialog(null,"Please select only one search method at a time.");
         }
     }
 
@@ -160,32 +189,7 @@ public class SearchPaneController implements Initializable {
      */
     public void run_search() throws IOException {
         
-        if(isOnlyOneSelected()){
-                if(bfs.isSelected()){
-                    search = new BreadthFirstSearch(space);
-                }
-                else if(dfs.isSelected()){
-                    search = new DepthFirstSearch(space);
-                }
-                else if(astar.isSelected()){
-                    search = new BestFirstSearch(space);
-                }
-                else if(genetic.isSelected()){
-                    //control.setHeader("Genetic Search",85.0);
-                }
-                else if(basic.isSelected()){
-                    search = new BasicSearch(space);
-                }
-                else{
-                    search = new PruneSearch(space);
-                }
-        }
-        else{
-            if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())
-                JOptionPane.showMessageDialog(null,"Please select a search method to proceed.", "Error", 0);
-            else
-                JOptionPane.showMessageDialog(null,"Please select only one search method at a time.");
-        }
+        
     }
     
     /**Check whether only one check box is selected

@@ -375,7 +375,7 @@ public class RunSearchController implements Initializable {
             pane.getChildren().removeAll();
             pane.getChildren().setAll(root);
             SearchPaneController control=loader.getController();
-            control.setSearchMehod(header2.getText());
+            control.setSearchMethod(header2.getText());
         }catch (IOException e){
             e.printStackTrace();
         }

@@ -47,8 +47,8 @@ public class TableController implements Initializable {
     @FXML
     private TableView<TableNode> synapseTab;
 
-    private ObservableList<TableNode> nodeData = FXCollections.observableArrayList();
-    private ObservableList<TableNode> synapseData = FXCollections.observableArrayList();
+    private static ObservableList<TableNode> nodeData = FXCollections.observableArrayList();
+    private static ObservableList<TableNode> synapseData = FXCollections.observableArrayList();
     
     /**
      * Initializes the controller class.
@@ -87,7 +87,35 @@ public class TableController implements Initializable {
         synapseData.add(new TableNode (source, destination, time, distance));
     }
     
+    public static void deductLifetime(int id){
+        for(TableNode ptr: nodeData){
+            if(ptr.getNodeID() == id)
+                ptr.setLifetime(ptr.getLifetime()-1);
+        }
+    }
     
+    public static void removeNode(int id){
+        for(TableNode ptr: nodeData)
+            if(ptr.getNodeID() == id){
+                nodeData.remove(ptr);
+                break;
+            }
+    }
+    
+    public static void removeSynapse(int id){
+        while(true){
+            TableNode check = null;
+            for(TableNode ptr: synapseData){
+                check = ptr;
+                if(ptr.getSource() == id || ptr.getDestination() == id){
+                    synapseData.remove(ptr);
+                    break;
+                }
+            }
+            if(synapseData.indexOf(check) == synapseData.size()-1)
+                break;
+        }
+    }
     
 }
 

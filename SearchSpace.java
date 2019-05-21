@@ -80,9 +80,12 @@ public class SearchSpace {
         for (int i = 0; i < path.size(); i++) {
             int id = path.get(i);
             space.get(id).deductLifeTime();
+            TableController.deductLifetime(id);
             if (space.get(id).getLifetime() == 0) {
                 space.remove(id);
                 GraphSetup.deleteNeuron(id);
+                TableController.removeNode(id);
+                TableController.removeSynapse(id);
                 for (Map.Entry<Integer, Neuron> entry : space.entrySet()) {
                     if (entry.getValue().containsSynapse(id)) {
                         entry.getValue().removeSynapse(id);

@@ -33,12 +33,12 @@
             </JFXButton>
             <VBox layoutX="21.0" layoutY="307.0" spacing="20.0">
                <children>
-                  <JFXCheckBox fx:id="basic" layoutX="435.0" layoutY="108.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Basic Search" />
-                  <JFXCheckBox fx:id="bfs" layoutX="451.0" layoutY="168.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Breadth First Search" />
-                  <JFXCheckBox fx:id="dfs" layoutX="462.0" layoutY="239.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Depth First Search" />
-                  <JFXCheckBox fx:id="astar" layoutX="456.0" layoutY="290.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Best First Search" />
-                  <JFXCheckBox fx:id="prune" layoutX="462.0" layoutY="330.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Prune Search" />
-                  <JFXCheckBox fx:id="genetic" layoutX="456.0" layoutY="423.0" styleClass="searchchckbox" stylesheets="@mycss.css" text="Genetic Search" />
+                  <JFXCheckBox fx:id="basic" layoutX="435.0" layoutY="108.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Basic Search" />
+                  <JFXCheckBox fx:id="bfs" layoutX="451.0" layoutY="168.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Breadth First Search" />
+                  <JFXCheckBox fx:id="dfs" layoutX="462.0" layoutY="239.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Depth First Search" />
+                  <JFXCheckBox fx:id="astar" layoutX="456.0" layoutY="290.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Best First Search" />
+                  <JFXCheckBox fx:id="prune" layoutX="462.0" layoutY="330.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Prune Search" />
+                  <JFXCheckBox fx:id="genetic" layoutX="456.0" layoutY="423.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Genetic Search" />
                </children>
             </VBox>
          </children>
