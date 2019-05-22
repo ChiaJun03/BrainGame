@@ -118,4 +118,3 @@ public class TableController implements Initializable {
     }
     
 }
-
