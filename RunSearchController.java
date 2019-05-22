@@ -95,7 +95,7 @@ public class RunSearchController implements Initializable {
     private SearchSpace space;
     @FXML
     private JFXButton tablebtn;
-
+    private boolean openTable = false;
     /**
      * Initializes the controller class.
      * @param url
@@ -203,7 +203,8 @@ public class RunSearchController implements Initializable {
                 //set maximum value to 1000??? for d,f,g
                 int d=rand.nextInt(5)+1;
                 space.addNode(b,c,d);
-                control.addTableNode(b, c, d);
+                if(openTable)
+                    control.addTableNode(b, c, d);
                 
                 //add vertex to the graph
                 graph.addVertex(b);
@@ -223,7 +224,8 @@ public class RunSearchController implements Initializable {
                     int f=rand.nextInt(10)+1;
                     int g=rand.nextInt(10)+1;
                     space.addSynapse(b,e,f,g);
-                    control.addTableSynapse(b, e, f, g);
+                    if(openTable)
+                        control.addTableSynapse(b, e, f, g);
                     
                     //add edge to graph
                     graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
@@ -256,7 +258,8 @@ public class RunSearchController implements Initializable {
             c= Integer.parseInt(ConnectedNeuron.getText().trim());
             int d= Integer.parseInt(Lifetime.getText().trim());
             space.addNode(b,c,d);
-            control.addTableNode(b, c, d);
+            if(openTable)
+                control.addTableNode(b, c, d);
             //add node to the graph
             graph.addVertex(b);
             
@@ -301,7 +304,8 @@ public class RunSearchController implements Initializable {
         int f= Integer.parseInt(time.getText().trim());
         int g= Integer.parseInt(distance.getText().trim());
         space.addSynapse(b,e,f,g);
-        control.addTableSynapse(b, e, f, g);
+        if(openTable)
+            control.addTableSynapse(b, e, f, g);
         graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
         
         //after user input the last connection
@@ -375,8 +379,9 @@ public class RunSearchController implements Initializable {
      */
     @FXML
     public void showTable(){
-        Stage tableStage = new Stage();
-        try {
+        if(openTable==false){
+            Stage tableStage = new Stage();
+            try {
             FXMLLoader loader= new FXMLLoader(getClass().getResource("Table.fxml"));
             Parent root= (Parent) loader.load();
             control = loader.getController();
@@ -387,9 +392,12 @@ public class RunSearchController implements Initializable {
 
             BrainGame.draggable(root, tableStage);
 
-        } catch (IOException ex) {
+            } catch (IOException ex) {
             Logger.getLogger(RunSearchController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            }
+            openTable = true;
+        }else
+            JOptionPane.showMessageDialog(null,"You have already opened a table ! ");
     }
     
     //animation effect for text/object
