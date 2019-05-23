@@ -138,4 +138,8 @@ public class SearchSpace {
     public boolean contains(int id){
         return space.containsKey(id);
     }
+    
+    public boolean isEmpty(){
+        return space.isEmpty();
+    }
 }

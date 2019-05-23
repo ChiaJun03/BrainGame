@@ -47,7 +47,7 @@ public class SearchPaneController implements Initializable {
     @FXML
     private JFXTextField endnode;
     @FXML
-    private ImageView backbtn;
+    private ImageView closebtn;
     @FXML
     private JFXButton searchpath;
     @FXML
@@ -64,6 +64,8 @@ public class SearchPaneController implements Initializable {
     private JFXCheckBox prune;
     @FXML
     private JFXCheckBox genetic;
+    @FXML
+    private ImageView backbtn;
 
     /**
      * Initializes the controller class.
@@ -76,24 +78,6 @@ public class SearchPaneController implements Initializable {
         defaultGraphPane = graphObject.setup();
         searchPane.getChildren().add(defaultGraphPane);
     }
-
-    public void setSearchMethod(String searchMethod) {
-        this.searchMethod = searchMethod;
-        
-        if(searchMethod.equalsIgnoreCase("basic search"))
-            basic.setSelected(true);
-        else if(searchMethod.equalsIgnoreCase("breadth first search"))
-            bfs.setSelected(true);
-        else if(searchMethod.equalsIgnoreCase("depth first search"))
-            dfs.setSelected(true);
-        else if(searchMethod.equalsIgnoreCase("prune search"))
-            prune.setSelected(true);
-        else if(searchMethod.equalsIgnoreCase("best first search"))
-            astar.setSelected(true);
-        else
-            genetic.setSelected(true);
-    }
-
     
     // need to figure out a way to delay the changes of scene
     public void displayPath(ArrayList<Integer> path){
@@ -187,6 +171,7 @@ public class SearchPaneController implements Initializable {
 
     @FXML
     private void showTable(MouseEvent event) {
+        RunSearchController.tableStage.show();
     }
     
     @FXML

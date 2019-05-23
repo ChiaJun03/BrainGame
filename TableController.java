@@ -5,19 +5,26 @@
  */
 package braingame;
 
+import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -49,6 +56,10 @@ public class TableController implements Initializable {
 
     private static ObservableList<TableNode> nodeData = FXCollections.observableArrayList();
     private static ObservableList<TableNode> synapseData = FXCollections.observableArrayList();
+    @FXML
+    private ImageView closebtn;
+    @FXML
+    private AnchorPane tablepane;
     
     /**
      * Initializes the controller class.
@@ -65,7 +76,6 @@ public class TableController implements Initializable {
         
         neuronTab.setItems(nodeData);
         synapseTab.setItems(synapseData);
-        
     }
     
     /**Add a neuron data into neuron table
@@ -117,4 +127,20 @@ public class TableController implements Initializable {
         }
     }
     
+    @FXML
+    private void closeButtonAction(){
+        // get a handle to the stage
+        Stage stage = (Stage) closebtn.getScene().getWindow();
+        // do what you have to do
+        stage.close();
+        
+        RunSearchController.openTable = false;
+    }
+    
+    public void clear(){
+        nodeData.clear();
+        synapseData.clear();
+    }
+    
 }
+

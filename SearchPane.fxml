@@ -20,7 +20,7 @@
             <JFXTextField fx:id="startnode" labelFloat="true" layoutX="16.0" layoutY="108.0" promptText="Start Node" unFocusColor="WHITE" />
             <JFXTextField fx:id="endnode" labelFloat="true" layoutX="16.0" layoutY="167.0" promptText="End Node" unFocusColor="WHITE" />
             <ImageView fx:id="backbtn" fitHeight="31.0" fitWidth="34.0" layoutX="4.0" onMouseClicked="#back_program" pickOnBounds="true" preserveRatio="true" styleClass="backbtn" />
-            <ImageView fx:id="backbtn" fitHeight="31.0" fitWidth="34.0" layoutX="169.0" onMouseClicked="#close_program" pickOnBounds="true" preserveRatio="true" styleClass="closebtn" />
+            <ImageView fx:id="closebtn" fitHeight="31.0" fitWidth="34.0" layoutX="169.0" onMouseClicked="#close_program" pickOnBounds="true" preserveRatio="true" styleClass="closebtn" />
             <JFXButton fx:id="searchpath" buttonType="RAISED" layoutX="24.0" layoutY="235.0" onMouseClicked="#searchpath" prefHeight="43.0" prefWidth="153.0" ripplerFill="WHITE" styleClass="searchbtn" text="Search Path">
                <font>
                   <Font name="Arial" size="20.0" />
@@ -31,14 +31,13 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </JFXButton>
-            <VBox layoutX="21.0" layoutY="307.0" spacing="20.0">
+            <VBox layoutX="21.0" layoutY="320.0" spacing="20.0">
                <children>
                   <JFXCheckBox fx:id="basic" layoutX="435.0" layoutY="108.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Basic Search" />
                   <JFXCheckBox fx:id="bfs" layoutX="451.0" layoutY="168.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Breadth First Search" />
                   <JFXCheckBox fx:id="dfs" layoutX="462.0" layoutY="239.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Depth First Search" />
                   <JFXCheckBox fx:id="astar" layoutX="456.0" layoutY="290.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Best First Search" />
                   <JFXCheckBox fx:id="prune" layoutX="462.0" layoutY="330.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Prune Search" />
-                  <JFXCheckBox fx:id="genetic" layoutX="456.0" layoutY="423.0" onMouseClicked="#run_search" styleClass="searchchckbox" stylesheets="@mycss.css" text="Genetic Search" />
                </children>
             </VBox>
          </children>

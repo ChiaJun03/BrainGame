@@ -9,9 +9,19 @@ package braingame;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,6 +94,8 @@ public class RunSearchController implements Initializable {
     private JFXButton sub1;
     @FXML
     private JFXButton sub2;
+    @FXML
+    private JFXButton tablebtn;
  
     int count=0;
     int count2=0;
@@ -93,9 +105,9 @@ public class RunSearchController implements Initializable {
     private TableController control;
     private Graph<Integer , Synapse> graph;
     private SearchSpace space;
-    @FXML
-    private JFXButton tablebtn;
-    private boolean openTable = false;
+    protected static Stage tableStage;
+    protected static boolean openTable = false;
+
     /**
      * Initializes the controller class.
      * @param url
@@ -120,6 +132,22 @@ public class RunSearchController implements Initializable {
         
         //generate Graph
         graph = new DirectedSparseGraph<>();
+        
+        //create table
+        tableStage = new Stage();
+        try {
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("Table.fxml"));
+            Parent root= (Parent) loader.load();
+            control = loader.getController();
+            tableStage.initStyle(StageStyle.UNDECORATED);
+            Scene scene = new Scene(root);
+            tableStage.setScene(scene);
+
+            BrainGame.draggable(root, tableStage);
+
+        } catch (IOException ex) {
+            Logger.getLogger(RunSearchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**To set the header of this pane according to the searching method selected in the menu pane
@@ -185,6 +213,7 @@ public class RunSearchController implements Initializable {
      */
     private void submit1() {
         
+        
         //check whether user's input is an integer and is a 0 or not
         //if yes, display error message
         if(!(isInt(noNeuron.getText().trim()))||Integer.parseInt(noNeuron.getText().trim())<=0){
@@ -195,51 +224,58 @@ public class RunSearchController implements Initializable {
         
         //for auto case
         if(autoMode.isSelected()){
-            Random rand=new Random();
-            int amount=Integer.parseInt(noNeuron.getText().trim());
-            for(int i=1;i<=amount;i++){
-                b=i;
-                c=rand.nextInt(amount); //maximum coonected neuron is noNeuron-1
-                //set maximum value to 1000??? for d,f,g
-                int d=rand.nextInt(5)+1;
-                space.addNode(b,c,d);
-                if(openTable)
+            if(space.isEmpty()){
+                Random rand=new Random();
+                int amount=Integer.parseInt(noNeuron.getText().trim());
+                for(int i=1;i<=amount;i++){
+                    b=i;
+                    c=rand.nextInt(amount); //maximum coonected neuron is noNeuron-1
+                    //set maximum value to 1000??? for d,f,g
+                    int d=rand.nextInt(5)+1;
+                    space.addNode(b,c,d);
                     control.addTableNode(b, c, d);
-                
-                //add vertex to the graph
-                graph.addVertex(b);
 
-                // e can't be equal to b && e can't be same as previous generated e
-                ArrayList<Integer> list = new ArrayList<Integer>();
-                for (int j = 1; j <= amount; j++) {
-                   list.add(new Integer(j));
-                }
-                // remove self looping
-                list.remove((Integer)b);
-                //shuffle the destination id in list
-                Collections.shuffle(list);
-                //choose the first c number of ids in the list
-                for(int j=1;j<=c;j++){
-                    int e= list.get(j-1);
-                    int f=rand.nextInt(10)+1;
-                    int g=rand.nextInt(10)+1;
-                    space.addSynapse(b,e,f,g);
-                    if(openTable)
+                    //add vertex to the graph
+                    graph.addVertex(b);
+
+                    // e can't be equal to b && e can't be same as previous generated e
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    for (int j = 1; j <= amount; j++) {
+                       list.add(new Integer(j));
+                    }
+                    // remove self looping
+                    list.remove((Integer)b);
+                    //shuffle the destination id in list
+                    Collections.shuffle(list);
+                    //choose the first c number of ids in the list
+                    for(int j=1;j<=c;j++){
+                        int e= list.get(j-1);
+                        int f=rand.nextInt(10)+1;
+                        int g=rand.nextInt(10)+1;
+                        space.addSynapse(b,e,f,g);
                         control.addTableSynapse(b, e, f, g);
-                    
-                    //add edge to graph
-                    graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
-                    
+
+                        //add edge to graph
+                        graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
+
+                    }
+                    list.clear();
                 }
-                list.clear();
+
+                if(amount==1)
+                    JOptionPane.showMessageDialog(null,"1 neuron have been generated completely. Please click Search to proceed.");
+                else
+                    JOptionPane.showMessageDialog(null,amount+" neurons have been generated completely. Please click Search to proceed.");
+                searchbtn.setVisible(true);
+                return;
+            }else{
+                int reset = JOptionPane.showConfirmDialog(null, "A search space is already exist. Do you want to reset?", "Warning",JOptionPane.YES_NO_OPTION);
+                if(reset == 0){
+                    space.clear();
+                    control.clear();
+                    submit1();
+                }
             }
-            
-            if(amount==1)
-                JOptionPane.showMessageDialog(null,"1 neuron have been generated completely. Please click Search to proceed.");
-            else
-                JOptionPane.showMessageDialog(null,amount+" neurons have been generated completely. Please click Search to proceed.");
-            searchbtn.setVisible(true);
-            return;   
         }
         
         else{
@@ -258,8 +294,7 @@ public class RunSearchController implements Initializable {
             c= Integer.parseInt(ConnectedNeuron.getText().trim());
             int d= Integer.parseInt(Lifetime.getText().trim());
             space.addNode(b,c,d);
-            if(openTable)
-                control.addTableNode(b, c, d);
+            control.addTableNode(b, c, d);
             //add node to the graph
             graph.addVertex(b);
             
@@ -304,8 +339,7 @@ public class RunSearchController implements Initializable {
         int f= Integer.parseInt(time.getText().trim());
         int g= Integer.parseInt(distance.getText().trim());
         space.addSynapse(b,e,f,g);
-        if(openTable)
-            control.addTableSynapse(b, e, f, g);
+        control.addTableSynapse(b, e, f, g);
         graph.addEdge(space.get(b).getSynapseTo(e), b, e, EdgeType.DIRECTED);
         
         //after user input the last connection
@@ -362,14 +396,16 @@ public class RunSearchController implements Initializable {
         
 
         try{
-            FXMLLoader loader= new FXMLLoader(getClass().getResource("SearchPane.fxml"));
+            FXMLLoader loader;
+            if(header2.getText().equalsIgnoreCase("searching algorithm"))
+                loader= new FXMLLoader(getClass().getResource("SearchPane.fxml"));
+            else
+                loader= new FXMLLoader(getClass().getResource("GeneticPane.fxml"));
             GraphSetup gs = new GraphSetup();
             gs.setGraph(graph);
             AnchorPane root= (AnchorPane) loader.load();
             pane.getChildren().removeAll();
             pane.getChildren().setAll(root);
-            SearchPaneController control=loader.getController();
-            control.setSearchMethod(header2.getText());
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -380,21 +416,7 @@ public class RunSearchController implements Initializable {
     @FXML
     public void showTable(){
         if(openTable==false){
-            Stage tableStage = new Stage();
-            try {
-            FXMLLoader loader= new FXMLLoader(getClass().getResource("Table.fxml"));
-            Parent root= (Parent) loader.load();
-            control = loader.getController();
-            tableStage.initStyle(StageStyle.UNDECORATED);
-            Scene scene = new Scene(root);
-            tableStage.setScene(scene);
             tableStage.show();
-
-            BrainGame.draggable(root, tableStage);
-
-            } catch (IOException ex) {
-            Logger.getLogger(RunSearchController.class.getName()).log(Level.SEVERE, null, ex);
-            }
             openTable = true;
         }else
             JOptionPane.showMessageDialog(null,"You have already opened a table ! ");

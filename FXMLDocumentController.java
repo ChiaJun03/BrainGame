@@ -10,12 +10,16 @@ import com.jfoenix.controls.JFXCheckBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,23 +31,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private AnchorPane content_area;
     @FXML
-    private JFXButton runbtn;
-    @FXML
-    private JFXCheckBox bfs;
-    @FXML
-    private JFXCheckBox dfs;
-    @FXML
-    private JFXCheckBox astar;  //astar have been changed to Best First Search, but fx:id is still astar     
-    @FXML
     private ImageView closebtn;
     @FXML
-    private JFXCheckBox basic;
+    private ImageView geneticSearch;
     @FXML
-    private JFXCheckBox prune;
-    @FXML
-    private JFXCheckBox genetic;
-    @FXML
-    private Label label;
+    private ImageView normalSearch;
     
     
     @Override
@@ -60,71 +52,74 @@ public class FXMLDocumentController implements Initializable {
         //Platform.exit();
     }
     
-    public String searchType(){
-        if(bfs.isSelected()){
-            return "bfs";
-        }
-        return "Error";
-    }
-    
     @FXML
     /**Change the pane of window according to the check box checked by user
      */
-    public void run_search() throws IOException {
-        
-        if(isOnlyOneSelected()){
-            try{
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("RunSearch.fxml"));
-                AnchorPane root= (AnchorPane) loader.load();
-                content_area.getChildren().removeAll();
-                content_area.getChildren().setAll(root);  
+    public void run_search(MouseEvent event) throws IOException {
+        try{
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("RunSearch.fxml"));
+            AnchorPane root= (AnchorPane) loader.load();
+            content_area.getChildren().removeAll();
+            content_area.getChildren().setAll(root);  
 
-                RunSearchController control=loader.getController();
-                
-                if(bfs.isSelected()){
-                    control.setHeader("Breadth First Search",30.0);
-                }
-                else if(dfs.isSelected()){
-                    control.setHeader("Depth First Search",45.0);
-                }
-                else if(astar.isSelected()){
-                    //astar have been changed to Best First Search, but fx:id is still astar     
-                    control.setHeader("Best First Search",50.0);
-                }
-                else if(genetic.isSelected()){
-                    control.setHeader("Genetic Search",85.0);
-                }
-                else if(basic.isSelected()){
-                    control.setHeader("Basic Search",90.0);
-                }
-                else{
-                    control.setHeader("Prune Search",90.0);
-                }
-            }catch (IOException e){
-                e.printStackTrace();
+            RunSearchController control=loader.getController();
+
+            if(event.getSource().equals(normalSearch)){
+                control.setHeader("Searching Algorithm", 70.0);
             }
-        }
-        else{
-            if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())
-                JOptionPane.showMessageDialog(null,"Please select a search method to proceed.", "Error", 0);
-            else
-                JOptionPane.showMessageDialog(null,"Please select only one search method at a time.");
+            else{
+                control.setHeader("Genetic Algorithm",70.0);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
-    
-    /**Check whether only one check box is selected
-     * @return true if only one is checked else false
-     */
-    public boolean isOnlyOneSelected(){
-        return (bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&prune.isSelected());
+
+    @FXML
+    private void searchAEnt(MouseEvent event) {
+          ScaleTransition st = new ScaleTransition(Duration.millis(500), normalSearch);
+            st.setByX(0.07f);
+            st.setByY(0.07f);
+            st.setCycleCount(1);
+            st.setAutoReverse(true);
+            st.play();
     }
     
-}
+    @FXML
+    private void searchAExit(MouseEvent event) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(500), normalSearch);
+            st.setByX(-0.07f);
+            st.setByY(-0.07f);
+            st.setCycleCount(1);
+            st.setAutoReverse(true);
+            st.play();
+    }
+    
+      @FXML
+    private void searchBEnt(MouseEvent event) {
+           ScaleTransition st = new ScaleTransition(Duration.millis(500), geneticSearch);
+            st.setByX(0.07f);
+            st.setByY(0.07f);
+            st.setCycleCount(1);
+            st.setAutoReverse(true);
+            st.play();
+    }
+
+    @FXML
+    private void searchBExit(MouseEvent event) {
+          ScaleTransition st = new ScaleTransition(Duration.millis(500), geneticSearch);
+            st.setByX(-0.07f);
+            st.setByY(-0.07f);
+            st.setCycleCount(1);
+            st.setAutoReverse(true);
+            st.play();
+    }
+
+  
+    
+    }
+    
+
        
 
     // try progress bar

@@ -22,6 +22,26 @@ and open the template in the editor.
     -fx-opacity: 1;  
 }
 
+.animate{
+    -fx-image: url("genetic.jpg");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10,0,0,0);;
+}
+
+.animate:hover{
+    -fx-image: url("geneticmov.gif");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10,0,0,0);
+}
+
+.normal{
+    -fx-image: url("normal.jpg");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10,0,0,0);
+}
+
+.normal:hover{
+    -fx-image: url("normalmov.gif");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10,0,0,0);
+}
+
 .backbtn{
     -fx-image: url("backbtn.png");
     -fx-opacity: 0.5;
@@ -83,4 +103,14 @@ and open the template in the editor.
 
 .logo{
     -fx-image: url("logo.png");
+}
+
+.searchtypeB{
+   -fx-image: url("normal.jpg");
+   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10,0,0,0);
+}
+
+.searchtypeB:hover{
+   -fx-image: url("normalmov.gif");
+   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }

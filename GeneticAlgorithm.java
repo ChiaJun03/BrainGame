@@ -301,6 +301,7 @@ public class GeneticAlgorithm implements Search{
 
             population.arrange();
             population.toString(generation);
+            GeneticPaneController.addData(generation, population.getPopulationFitness());
             // Increment the current generation
             generation++;
         }
@@ -330,6 +331,10 @@ public class GeneticAlgorithm implements Search{
             path+="No path available";
         }
         return path;
+    }
+    
+    public void setPath(Population population){
+        bestIndividual = population.getFittest(0);
     }
         
 
