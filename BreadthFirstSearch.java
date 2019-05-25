@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class BreadthFirstSearch implements Search {
     private SearchSpace space;
-    private int currentTime;
+    private int currentTime, currentDistance, connection;
     private Node front;
     private ArrayList<Node> open, close;
     private ArrayList<Integer> goal;
@@ -24,22 +24,23 @@ public class BreadthFirstSearch implements Search {
         close = new ArrayList();
         goal = new ArrayList();
         currentTime = 0;
+        currentDistance = 0;
     }
     
     public void search(int start, int end){
+        breadthFirstSearch(start, end, 0);
+    }
+    
+    public void preSearch(int start){
         reset();
-        System.out.println("Search path from node "+start+" to node "+end+":");
-        if(space.contains(start)&&space.contains(end))
-            breadthFirstSearch(start, end, 0);
-        else
-            System.out.println("No path available");
+        open.add(new Node(-1, start));
+        connection = 0;
     }
 
-    public void breadthFirstSearch(int start, int end, int connection) {
+    public void breadthFirstSearch(int start, int end, int connect){
         System.out.println("Current Node : " + start);
-        open.add(new Node(-1, start));
         System.out.println("Add "+start+" into open queue.");
-        while (!open.isEmpty()) {
+        if(!open.isEmpty()){
             System.out.println("Open: "+open);
             System.out.println("Close: "+close);
             front = open.remove(0);
@@ -69,6 +70,7 @@ public class BreadthFirstSearch implements Search {
                     System.out.println("Get goal ! "+end);
                 }
                 open.clear();
+                SearchPaneController.setIsEnd(true);
             }else{
                 while (space.hasNext(front.getId(), connection)) {
                     int next = space.nextNode(front.getId(), connection);
@@ -90,6 +92,7 @@ public class BreadthFirstSearch implements Search {
         close.clear();
         goal.clear();
         currentTime = 0;
+        currentDistance = 0;
     }
     
     public boolean nodeClosed(int id){
@@ -111,4 +114,11 @@ public class BreadthFirstSearch implements Search {
     public ArrayList<Integer> getPath(){
         return goal;
     }
+
+    
+    public ArrayList<Integer> trackPath(){
+        return goal;
+    }
+    
+    
 }

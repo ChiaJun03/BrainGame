@@ -16,28 +16,29 @@ public class BestFirstSearch implements Search{
     private int currentTime;
     private Node front;
     private ArrayList<Node> open, close;
-    private ArrayList<Integer> goal;
+    private ArrayList<Integer> goal, path;
     
     public BestFirstSearch(SearchSpace space){
         this.space = space;
         open = new ArrayList();
         close = new ArrayList();
         goal = new ArrayList();
+        path = new ArrayList();
         currentTime = 0;
     }
     
     public void search(int start, int end){
+        bestFirstSearch(start, end, 0);
+    }
+    
+    public void preSearch(int start){
         reset();
-        System.out.println("Search path from node "+start+" to node "+end+":");
-        if(space.contains(start)&&space.contains(end))
-            bestFirstSearch(start, end, 0);
-        else
-            System.out.println("No path available");
+        open.add(new Node(-1, start, 0));
     }
     
     public void bestFirstSearch(int start, int end, int connection){
-        open.add(new Node(-1, start, 0));
-        while (!open.isEmpty()) {
+        
+        if(!open.isEmpty()) {
             System.out.println("Open: "+open);
             System.out.println("Close: "+close);
             front = open.remove(0);
@@ -68,6 +69,7 @@ public class BestFirstSearch implements Search{
                         System.out.println("Get goal ! "+end);
                     }
                     open.clear();
+                    SearchPaneController.setIsEnd(true);
                 }else{
                     while (space.hasNext(front.getId(), connection)) {
                         int next = space.nextNode(front.getId(), connection);
@@ -133,6 +135,11 @@ public class BestFirstSearch implements Search{
 
     @Override
     public ArrayList<Integer> getPath() {
+        return goal;
+    }
+
+    @Override
+    public ArrayList<Integer> trackPath() {
         return goal;
     }
 }

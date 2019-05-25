@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class PruneSearch implements Search{
     private SearchSpace space;
-    private int currentTime, currentDistance;
+    private int currentTime, currentDistance, minTime, root, start, connection;
     private ArrayList<Integer> goal;
     private ArrayList<Integer> timeList, distanceList;
     private ArrayList<ArrayList<Integer>> pathList;
@@ -29,18 +29,19 @@ public class PruneSearch implements Search{
     }
     
     public void search(int start, int end){
-        reset();
-        System.out.println("Search path from node "+start+" to node "+end+":");
-        if(space.contains(start)&&space.contains(end))
-            pruneSearch(start, end, 0);
-        else
-            System.out.println("No path available");
+        pruneSearch(start, end, 0);
     }
     
-    public void pruneSearch(int start, int end, int connection){
-        int root = start;
-        int minTime = Integer.MAX_VALUE;
-        while(start!=root || space.hasNext(start, connection)){
+    public void preSearch(int start){
+        reset();
+        root = start;
+        this.start = start;
+        connection = 0;
+        minTime = Integer.MAX_VALUE;
+    }
+    
+    public void pruneSearch(int begin, int end, int connect){
+        if(start!=root || space.hasNext(start, connection)){
             if(start == end){
                 currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
                 currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
@@ -95,6 +96,8 @@ public class PruneSearch implements Search{
                 start = space.nextNode(start, connection);
                 connection = 0;
             }
+        }else{
+            SearchPaneController.setIsEnd(true);
         }
         
     }
@@ -154,5 +157,10 @@ public class PruneSearch implements Search{
         else
             path+="No path available\n";
         return path;
+    }
+
+    @Override
+    public ArrayList<Integer> trackPath() {
+        return goal;
     }
 }

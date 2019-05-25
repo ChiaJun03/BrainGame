@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class BasicSearch implements Search {
     private SearchSpace space;
-    private int currentTime, currentDistance;
+    private int currentTime, currentDistance, root, start, connection;
     private ArrayList<Integer> goal;
     private ArrayList<Integer> timeList, distanceList;
     private ArrayList<ArrayList<Integer>> pathList;
@@ -29,17 +29,19 @@ public class BasicSearch implements Search {
     }
     
     public void search(int start, int end){
-        reset();
-        System.out.println("Search path from node "+start+" to node "+end+":");
-        if(space.contains(start)&&space.contains(end))
-            DFSbasedSearch(start, end, 0);
-        else
-            System.out.println("No path available");
+        DFSbasedSearch(start, end, 0);
     }
     
-    public void DFSbasedSearch(int start, int end, int connection){
-        int root = start;
-        while(start!=root || space.hasNext(start, connection)){
+    public void preSearch(int start){
+        reset();
+        root = start;
+        this.start = start;
+        connection = 0;
+    }
+    
+    public void DFSbasedSearch(int begin, int end, int connect){
+        
+        if(start!=root || space.hasNext(start, connection)){
             if(start == end){
                 currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
                 currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
@@ -82,6 +84,8 @@ public class BasicSearch implements Search {
                 start = space.nextNode(start, connection);
                 connection = 0;
             }
+        }else{
+            SearchPaneController.setIsEnd(true);
         }
         
     }
@@ -146,5 +150,10 @@ public class BasicSearch implements Search {
         else
             path+="No path available\n";
         return path;
+    }
+
+    
+    public ArrayList<Integer> trackPath() {
+        return goal;
     }
 }

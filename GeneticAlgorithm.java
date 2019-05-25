@@ -13,7 +13,7 @@ import java.util.TreeMap;
  *
  * @author Yuan Qing
  */
-public class GeneticAlgorithm implements Search{
+public class GeneticAlgorithm{
 
     private TreeMap<Integer, Neuron> treemap;
     private Individual bestIndividual;
@@ -288,7 +288,7 @@ public class GeneticAlgorithm implements Search{
         evalPopulation(population, endID);
         int generation = 1;
         int maxGenerations = 20;
-        while (isTerminationConditionMet(generation, maxGenerations) == false) {
+        while (isTerminationConditionMet(generation, maxGenerations) == false){
             // Print fittest individual from population
 
             // Apply crossover
@@ -301,7 +301,6 @@ public class GeneticAlgorithm implements Search{
 
             population.arrange();
             population.toString(generation);
-            GeneticPaneController.addData(generation, population.getPopulationFitness());
             // Increment the current generation
             generation++;
         }
@@ -335,6 +334,11 @@ public class GeneticAlgorithm implements Search{
     
     public void setPath(Population population){
         bestIndividual = population.getFittest(0);
+    }
+
+    
+    public ArrayList<Integer> trackPath() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
         
 

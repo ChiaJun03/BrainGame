@@ -152,7 +152,7 @@ public class GeneticPaneController implements Initializable {
         
         tl = new Timeline();
         tl.getKeyFrames().add(
-        new KeyFrame(Duration.millis(500), 
+        new KeyFrame(Duration.millis(100), 
             new EventHandler<ActionEvent>() {
                 int start = Integer.parseInt(startnode.getText());
                 int end = Integer.parseInt(endnode.getText());

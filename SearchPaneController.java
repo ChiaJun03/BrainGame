@@ -16,7 +16,12 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.embed.swing.SwingNode;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,7 +44,9 @@ public class SearchPaneController implements Initializable {
     private String searchMethod;
     private SwingNode defaultGraphPane;
     private SwingNode changedGraphPane;
+    private Timeline tl;
     private Search search;
+    private static boolean isEnd;
     
     @FXML
     private AnchorPane searchPane;
@@ -63,8 +71,6 @@ public class SearchPaneController implements Initializable {
     @FXML
     private JFXCheckBox prune;
     @FXML
-    private JFXCheckBox genetic;
-    @FXML
     private ImageView backbtn;
 
     /**
@@ -85,12 +91,12 @@ public class SearchPaneController implements Initializable {
         ArrayList<Synapse> edgeList = new ArrayList<>();
         for (int iterate1 = 0; iterate1 < path.size(); iterate1++) {
             nodeList.add(path.get(iterate1));
-            System.out.println("Path list : " + path.get(iterate1));
+            //System.out.println("Path list : " + path.get(iterate1));
             if (iterate1 > 0) {
-                System.out.println(path.get(iterate1 - 1));
+                //System.out.println(path.get(iterate1 - 1));
                 Neuron temp = space.getTreeMap().get(path.get(iterate1 - 1));
-                System.out.println(space);
-                System.out.println(temp);
+                //System.out.println(space);
+                //System.out.println(temp);
                 edgeList.add(temp.getSynapseTo(path.get(iterate1)));
             }
             showPath(nodeList,edgeList);
@@ -112,57 +118,53 @@ public class SearchPaneController implements Initializable {
     }
 
     @FXML
-    private void close_program(MouseEvent event) {
+    private void close_program(MouseEvent event){
          System.exit(0);
     }
 
     @FXML
-    private void searchpath(MouseEvent event) {
-        
+    private void searchpath(MouseEvent event){
         if(isOnlyOneSelected()){
+            isEnd = false;
+            selectAlgo();
             int start = Integer.parseInt(startnode.getText());
             int end = Integer.parseInt(endnode.getText());
-            if(search!=null && search.getPath()!=null)
-                space.deductLifeTimes(search.getPath());
-        
-            if(bfs.isSelected()){
-                search = new BreadthFirstSearch(space);
-            }
-            else if(dfs.isSelected()){
-                search = new DepthFirstSearch(space);
-            }
-            else if(astar.isSelected()){
-                search = new BestFirstSearch(space);
-            }
-            else if(genetic.isSelected()){
-                int populationSize = 20; // range between 10 to 100
-                double mutationRate = 0.1; // range below 10%
-                double crossoverRate = 0.8; // range higher than 70&
-                int elitismCount = 5; // range 10% of the populationSize
-                int tournamentSize = 10; // range 70% of the populationSize
-                search = new GeneticAlgorithm(space.getTreeMap(),populationSize,mutationRate,crossoverRate, elitismCount,tournamentSize);
-            }
-            else if(basic.isSelected()){
-                search = new BasicSearch(space);
-            }
-            else{
-                search = new PruneSearch(space);
-            }
-            
-            search.search(start, end);
-        
-            if(search.getPath()==null){
-                displayPath(new ArrayList<Integer>());
+            search.preSearch(start);
+            searchPane.getChildren().remove(defaultGraphPane);
+            if(space.contains(start)&&space.contains(end)){
+                tl = new Timeline();
+                tl.getKeyFrames().add(
+                new KeyFrame(Duration.millis(100), 
+                    new EventHandler<ActionEvent>(){
+                        Search search = getSearch();
+                        int start = Integer.parseInt(startnode.getText());
+                        int end = Integer.parseInt(endnode.getText());
+                        public void handle(ActionEvent actionEvent){
+                            search.search(start, end);
+                            if(search.trackPath()!=null)
+                                displayPath(search.trackPath());
+                            if(isEnd){
+                                if(search.getPath()==null){
+                                    displayPath(new ArrayList<Integer>());
+                                    JOptionPane.showMessageDialog(null,"No Path Available.");
+                                }
+                                else{
+                                    displayPath(search.getPath());
+                                    JOptionPane.showMessageDialog(null, search);
+                                }
+                                tl.stop();
+                            }
+                        }
+                     }
+                ));
+                tl.setCycleCount(Animation.INDEFINITE);
+                tl.setAutoReverse(true);
+                tl.play();
+            }else{
                 JOptionPane.showMessageDialog(null,"No Path Available.");
             }
-            else{
-                displayPath(search.getPath());
-                JOptionPane.showMessageDialog(null, search);
-            }
-        
-        }
-        else{
-            if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())
+        }else{
+            if(!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!basic.isSelected()&&!prune.isSelected())
                 JOptionPane.showMessageDialog(null,"Please select a search method to proceed.", "Error", 0);
             else
                 JOptionPane.showMessageDialog(null,"Please select only one search method at a time.");
@@ -186,11 +188,41 @@ public class SearchPaneController implements Initializable {
      * @return true if only one is checked else false
      */
     public boolean isOnlyOneSelected(){
-        return (bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&genetic.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&basic.isSelected()&&!prune.isSelected())||
-            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!genetic.isSelected()&&!basic.isSelected()&&prune.isSelected());
+        return (bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&dfs.isSelected()&&!astar.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&astar.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&basic.isSelected()&&!prune.isSelected())||
+            (!bfs.isSelected()&&!dfs.isSelected()&&!astar.isSelected()&&!basic.isSelected()&&prune.isSelected());
+    }
+    
+    public void selectAlgo(){
+        if(search!=null && search.getPath()!=null)
+            space.deductLifeTimes(search.getPath());
+
+        if(bfs.isSelected()){
+            search = new BreadthFirstSearch(space);
+        }
+        else if(dfs.isSelected()){
+            search = new DepthFirstSearch(space);
+        }
+        else if(astar.isSelected()){
+            search = new BestFirstSearch(space);
+        }
+        else if(basic.isSelected()){
+            search = new BasicSearch(space);
+        }
+        else{
+            search = new PruneSearch(space);
+        }
+        
+    }
+    
+    public Search getSearch(){
+        return this.search;
+    }
+    
+    public static void setIsEnd(boolean cond){
+        isEnd = cond;
     }
 }
