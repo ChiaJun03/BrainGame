@@ -17,6 +17,7 @@ public class BreadthFirstSearch implements Search {
     private Node front;
     private ArrayList<Node> open, close;
     private ArrayList<Integer> goal;
+    private String console;
     
     public BreadthFirstSearch(SearchSpace space){
         this.space = space;
@@ -43,6 +44,7 @@ public class BreadthFirstSearch implements Search {
         if(!open.isEmpty()){
             System.out.println("Open: "+open);
             System.out.println("Close: "+close);
+            console = "Open: "+open+"\nClose: "+close;
             front = open.remove(0);
             close.add(front);
             System.out.println(front.getId()+" is removed from open queue and push into close stack.");
@@ -50,6 +52,7 @@ public class BreadthFirstSearch implements Search {
             if (front.getId() == end) {
                 goal.add(0, end);
                 System.out.println("Backtracking...");
+                console += "\nBacktracking...";
                 for(int i = 0 ; i< close.size() -1 ; i++){
                     if(front.getParent() == close.get(i).getId()){
                         System.out.println("ID: "+front.getId()+"\tParent: "+front.getParent()+"\tClose ID: "+close.get(i).getId());
@@ -118,6 +121,11 @@ public class BreadthFirstSearch implements Search {
     
     public ArrayList<Integer> trackPath(){
         return goal;
+    }
+
+    @Override
+    public String console() {
+        return console;
     }
     
     

@@ -31,7 +31,7 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="geneticSearch" fitHeight="123.0" fitWidth="220.0" layoutX="489.0" layoutY="345.0" onMouseClicked="#run_search" onMouseEntered="#searchBEnt" onMouseExited="#searchBExit" styleClass="animate" />
+      <ImageView fx:id="geneticSearch" fitHeight="123.0" fitWidth="220.0" layoutX="489.0" layoutY="345.0" onMouseClicked="#run_search" onMouseEntered="#searchBEnt" styleClass="animate" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="133.0" layoutX="483.0" layoutY="182.0" opacity="0.0" stroke="#02001e" strokeType="INSIDE" strokeWidth="5.0" styleClass="searchtypeA" width="229.0">
          <effect>
             <DropShadow />
@@ -45,7 +45,7 @@
             <DropShadow color="#00bfff" />
          </effect>
       </Text>
-      <ImageView fx:id="normalSearch" fitHeight="123.0" fitWidth="220.0" layoutX="487.0" layoutY="192.0" onMouseClicked="#run_search" onMouseEntered="#searchAEnt" onMouseExited="#searchAExit" styleClass="normal" />
+      <ImageView fx:id="normalSearch" fitHeight="123.0" fitWidth="220.0" layoutX="487.0" layoutY="192.0" onMouseClicked="#run_search" onMouseEntered="#searchAEnt" styleClass="normal" />
       <Text fill="WHITE" layoutX="494.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Algorithm">
          <effect>
             <DropShadow color="#00bfff" />

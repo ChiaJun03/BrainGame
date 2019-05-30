@@ -279,16 +279,15 @@ public class GeneticAlgorithm{
         return newPopulation;
     }
 
-    
+    private int generation = 1;
+    private int maxGenerations = 20;
     public void search(int startID, int endID) {
         //Initialize population
-        System.out.println("1");
+        //System.out.println("1");
         Population population = initPopulation(startID,endID);
-        System.out.println("2");
+        //System.out.println("2");
         evalPopulation(population, endID);
-        int generation = 1;
-        int maxGenerations = 20;
-        while (isTerminationConditionMet(generation, maxGenerations) == false){
+        if (isTerminationConditionMet(generation, maxGenerations) == false){
             // Print fittest individual from population
 
             // Apply crossover

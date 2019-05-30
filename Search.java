@@ -21,4 +21,6 @@ public interface Search {
     public abstract ArrayList<Integer> getPath();
     
     public abstract ArrayList<Integer> trackPath();
+    
+    public abstract String console();
 }

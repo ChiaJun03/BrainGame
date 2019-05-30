@@ -17,6 +17,7 @@ public class BasicSearch implements Search {
     private ArrayList<Integer> goal;
     private ArrayList<Integer> timeList, distanceList;
     private ArrayList<ArrayList<Integer>> pathList;
+    private String console;
     
     public BasicSearch(SearchSpace space){
         this.space = space;
@@ -44,8 +45,9 @@ public class BasicSearch implements Search {
         if(start!=root || space.hasNext(start, connection)){
             if(start == end){
                 currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
-                currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
+                currentDistance += space.get(goal.get(pathList.size()-1)).getDistanceTo(start);
                 goal.add(start); System.out.println("Add "+start+" into path.");
+                console = showPath(goal)+"(Goal"+goal.size()+1+")";
                 System.out.println(showPath(goal));
                 pathList.add((ArrayList<Integer>) goal.clone());
                 timeList.add(currentTime);
@@ -61,6 +63,7 @@ public class BasicSearch implements Search {
                     currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
             }else if(!space.hasNext(start, connection)){
+                console = showPath(goal)+" - "+start+" - (Leaf node)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 System.out.println(showPath(goal));
@@ -69,6 +72,7 @@ public class BasicSearch implements Search {
                     currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
             }else if(goal.contains(start)){
+                console = showPath(goal)+" - "+start+" - (Loop)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 System.out.println(showPath(goal));
@@ -80,6 +84,7 @@ public class BasicSearch implements Search {
                     currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
                 goal.add(start); System.out.println("Add "+start+" into path.");
+                console = showPath(goal)+" - ";
                 System.out.println(showPath(goal));
                 start = space.nextNode(start, connection);
                 connection = 0;
@@ -155,5 +160,9 @@ public class BasicSearch implements Search {
     
     public ArrayList<Integer> trackPath() {
         return goal;
+    }
+    
+    public String console(){
+        return console;
     }
 }

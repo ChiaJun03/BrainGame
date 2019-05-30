@@ -17,6 +17,7 @@ public class PruneSearch implements Search{
     private ArrayList<Integer> goal;
     private ArrayList<Integer> timeList, distanceList;
     private ArrayList<ArrayList<Integer>> pathList;
+    private String console;
     
     public PruneSearch(SearchSpace space){
         this.space = space;
@@ -46,6 +47,7 @@ public class PruneSearch implements Search{
                 currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
                 currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 goal.add(start); System.out.println("Add "+start+" into path.");
+                console = showPath(goal) + " (Goal "+pathList.size()+1+")";
                 System.out.println(showPath(goal));
                 if(currentTime<=minTime){
                     pathList.add((ArrayList<Integer>) goal.clone());
@@ -64,6 +66,7 @@ public class PruneSearch implements Search{
                     currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
             }else if(!space.hasNext(start, connection)){
+                console = showPath(goal)+" - "+start+" - (Leaf node)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 System.out.println(showPath(goal));
@@ -72,6 +75,7 @@ public class PruneSearch implements Search{
                     currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
             }else if(goal.contains(start)){
+                console = showPath(goal)+" - "+start+" - (Loop)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 System.out.println(showPath(goal));
@@ -79,6 +83,7 @@ public class PruneSearch implements Search{
                 currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
             }else if(currentTime > minTime){
                 System.out.println("Prune!");
+                console = showPath(goal)+" - "+start+" - (Prune)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 System.out.println(showPath(goal));
@@ -92,6 +97,7 @@ public class PruneSearch implements Search{
                     currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
                 goal.add(start); System.out.println("Add "+start+" into path.");
+                console = showPath(goal)+" - ";
                 System.out.println(showPath(goal));
                 start = space.nextNode(start, connection);
                 connection = 0;
@@ -162,5 +168,10 @@ public class PruneSearch implements Search{
     @Override
     public ArrayList<Integer> trackPath() {
         return goal;
+    }
+
+    @Override
+    public String console() {
+        return console;
     }
 }

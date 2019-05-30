@@ -6,12 +6,38 @@
 
 }
 
+.slide{
+    -fx-image: url("slide.png");
+    -fx-opacity: 0.5;
+}
+
+.slide:hover{
+    -fx-opacity: 1;
+}
+
+.changecolor{
+    -fx-stroke: #42c5f4;
+}
+
+.changecolor:hover{
+    -fx-stroke: white;
+}
 
 /* To do list
  * make the search space become static for normal n genetic search or always clear it when back to menu
- * make the two pic at menu show that it can be clicked
  * what is the information needed to be input for genetic algo?
- * the run search header problem
- * genetic algo graph
- * how to animate graph?
+ * genetic algo graph (individual, population)
+ * save function for search space
+ */
+
+/* Animation problem
+ * P1: slow down searching process
+ * P2: keep refreshing frame
+ * P3: heap has not enough space for complete searching even with small search space
+ * P4: BFS and best search tracking path problem
+ */
+
+/* Possible solutions
+ * S1: make it able to swtich between GUI and console mode
+ * S2: using translation instead of refresh the whole frame
  */

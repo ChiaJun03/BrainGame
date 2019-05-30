@@ -15,6 +15,7 @@ public class DepthFirstSearch implements Search{
     private SearchSpace space;
     private int currentTime, currentDistance, root, start, connection;
     private ArrayList<Integer> goal;
+    private String console;
     
     public DepthFirstSearch(SearchSpace space){
         this.space = space;
@@ -41,8 +42,10 @@ public class DepthFirstSearch implements Search{
                 currentTime += space.get(goal.get(goal.size()-1)).getTimeTo(start);
                 currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 goal.add(start); System.out.println("Add "+start+" into path.");
+                console = toString()+" (Goal)";
                 SearchPaneController.setIsEnd(true);
             }else if(!space.hasNext(start, connection)){
+                console = toString()+" - "+start+" - (Leaf node)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 if(!goal.isEmpty()){
@@ -50,6 +53,7 @@ public class DepthFirstSearch implements Search{
                     currentDistance -= space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
             }else if(goal.contains(start)){
+                console = toString()+" - "+start+" - (Loop)";
                 connection = start;
                 start = goal.remove(goal.size()-1); System.out.println("Remove "+start+" from path.");
                 currentTime -= space.get(goal.get(goal.size()-1)).getTimeTo(start);
@@ -60,6 +64,7 @@ public class DepthFirstSearch implements Search{
                     currentDistance += space.get(goal.get(goal.size()-1)).getDistanceTo(start);
                 }
                 goal.add(start); System.out.println("Add "+start+" into path.");
+                console = toString()+" - ";
                 start = space.nextNode(start, connection);
                 connection = 0;
             }
@@ -80,8 +85,10 @@ public class DepthFirstSearch implements Search{
             path+="No path available";
         else{
             for(Integer ptr: goal)
-                path+=ptr+" - ";
-            path+=" goal!\nTime used: "+currentTime+"s\nDistance travelled: "+currentDistance+"\n";
+                if(goal.indexOf(ptr)==goal.size()-1)
+                    path+=ptr;
+                else
+                    path+=ptr+" - ";
         }
         return path;
     }
@@ -94,5 +101,10 @@ public class DepthFirstSearch implements Search{
     @Override
     public ArrayList<Integer> trackPath() {
         return goal;
+    }
+
+    @Override
+    public String console() {
+        return console;
     }
 }

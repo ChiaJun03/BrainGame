@@ -80,5 +80,10 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXButton>
+      <JFXButton fx:id="loadbtn" buttonType="RAISED" layoutX="376.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="73.0" ripplerFill="WHITE" styleClass="searchbtn" text="Load">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

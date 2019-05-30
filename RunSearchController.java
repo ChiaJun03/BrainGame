@@ -229,7 +229,7 @@ public class RunSearchController implements Initializable {
                 int amount=Integer.parseInt(noNeuron.getText().trim());
                 for(int i=1;i<=amount;i++){
                     b=i;
-                    c=rand.nextInt(amount); //maximum coonected neuron is noNeuron-1
+                    c=rand.nextInt(11); //maximum coonected neuron is noNeuron-1
                     //set maximum value to 1000??? for d,f,g
                     int d=rand.nextInt(5)+1;
                     space.addNode(b,c,d);
